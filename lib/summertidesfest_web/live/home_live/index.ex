@@ -9,12 +9,12 @@ defmodule SummertidesfestWeb.HomeLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
+    <.home_header />
     <.home_hero />
     <.home_gallery />
     <.home_about />
     <.home_rewind_time />
     <.home_supported_by />
-    <.home_cta />
     <.home_footer />
     """
   end
