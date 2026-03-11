@@ -1,0 +1,242 @@
+<%!-- NavBar --%>
+<nav
+  id="navbar"
+  phx-hook="NavBar"
+  style="background-color: black;"
+  class="fixed left-0 top-0 w-full z-50 ease-in duration-300"
+>
+  <div class="max-w-[1280px] m-auto flex justify-between items-center px-4 py-3 text-white">
+    <a href="/">
+      <img src="/images/summertides.png" class="w-[90px] object-contain" />
+    </a>
+
+    <ul class="hidden xl:flex items-center text-sm font-medium tracking-wide mon">
+      <a href="/#about" class="hover:text-[#E8C87A] transition-all ease-in-out duration-300 px-3 py-2 uppercase">
+        <li>About</li>
+      </a>
+      <a href="/#artists" class="hover:text-[#E8C87A] transition-all ease-in-out duration-300 px-3 py-2 uppercase">
+        <li>Lineup</li>
+      </a>
+      <a href="/#experience" class="hover:text-[#E8C87A] transition-all ease-in-out duration-300 px-3 py-2 uppercase">
+        <li>Experience</li>
+      </a>
+      <a href="/#venue" class="hover:text-[#E8C87A] transition-all ease-in-out duration-300 px-3 py-2 uppercase">
+        <li>Venue</li>
+      </a>
+      <a href="/#tickets" class="hover:text-[#E8C87A] transition-all ease-in-out duration-300 px-3 py-2 uppercase">
+        <li>Tickets</li>
+      </a>
+      <a href="/#gallery" class="hover:text-[#E8C87A] transition-all ease-in-out duration-300 px-3 py-2 uppercase">
+        <li>Gallery</li>
+      </a>
+      <a href="/faqs" class="text-[#E8C87A] px-3 py-2 uppercase mon font-bold">
+        <li>FAQs</li>
+      </a>
+    </ul>
+
+    <div class="hidden xl:flex items-center">
+      <a
+        href="https://summertidesfestival.hustlesasa.shop/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-[#5C2D0A] hover:bg-[#E8C87A] hover:text-[#5C2D0A] transition-all duration-300 text-[#E8C87A] font-bold uppercase tracking-wider px-6 py-2 text-sm mon"
+      >
+        Get Tickets
+      </a>
+    </div>
+
+    <%!-- Mobile hamburger --%>
+    <div class="xl:hidden block z-10">
+      <button id="nav-icon" phx-hook="MobileNav" data-open="false" class="text-white focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+    </div>
+
+    <%!-- Mobile menu --%>
+    <div
+      id="mobile-menu"
+      class="xl:hidden absolute top-0 right-0 text-xl text-center left-[-100%] bottom-0 flex justify-center items-center w-full h-screen bg-black text-white duration-300 ease-in-out"
+    >
+      <ul id="mobile-nav-list" phx-hook="CloseMobileNav" class="flex flex-col gap-2">
+        <a href="/" class="hover:text-[#E8C87A] transition-all duration-300 uppercase tracking-widest mon"><li class="p-3">Home</li></a>
+        <a href="/#about" class="hover:text-[#E8C87A] transition-all duration-300 uppercase tracking-widest mon"><li class="p-3">About</li></a>
+        <a href="/#artists" class="hover:text-[#E8C87A] transition-all duration-300 uppercase tracking-widest mon"><li class="p-3">Lineup</li></a>
+        <a href="/#experience" class="hover:text-[#E8C87A] transition-all duration-300 uppercase tracking-widest mon"><li class="p-3">Experience</li></a>
+        <a href="/#venue" class="hover:text-[#E8C87A] transition-all duration-300 uppercase tracking-widest mon"><li class="p-3">Venue</li></a>
+        <a href="/#tickets" class="hover:text-[#E8C87A] transition-all duration-300 uppercase tracking-widest mon"><li class="p-3">Tickets</li></a>
+        <a href="/faqs" class="text-[#E8C87A] uppercase tracking-widest mon font-bold"><li class="p-3">FAQs</li></a>
+        <li class="mt-4">
+          <a
+            href="https://summertidesfestival.hustlesasa.shop/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-block bg-[#5C2D0A] text-[#E8C87A] font-bold uppercase tracking-wider px-8 py-3 mon"
+          >
+            Get Tickets
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<%!-- FAQs Page --%>
+<div id="faqs" class="min-h-screen pb-20 pt-20" style="background-color: #0D0800;">
+
+  <%!-- Header --%>
+  <div class="flex justify-center items-center relative overflow-hidden py-4">
+    <p class="section-num" style="color: #3D1C08; opacity: 0.6;">FAQs</p>
+    <div class="absolute w-full text-center">
+      <p class="text-[#E8C87A]/50 uppercase tracking-[0.4em] text-xs mon font-semibold mb-2">Summer Tides 2026</p>
+      <h1 class="bangers text-white md:text-6xl text-4xl tracking-wider uppercase">
+        Frequently Asked Questions
+      </h1>
+      <div class="h-[3px] w-[50px] bg-[#E8C87A] mx-auto mt-4"></div>
+    </div>
+  </div>
+
+  <%!-- FAQs List --%>
+  <div class="flex flex-col mx-auto md:w-[75%] w-[90%] mt-10">
+    <%= for {faq, index} <- Enum.with_index(@faqs) do %>
+      <div class={[
+        "border-b py-6",
+        if(index == 0, do: "border-t border-t-[#5C2D0A]/40", else: ""),
+        "border-[#5C2D0A]/40"
+      ]}>
+        <div
+          phx-click="toggle_faq"
+          phx-value-id={faq.id}
+          class="cursor-pointer flex justify-between items-start gap-4 group"
+        >
+          <div class="flex items-start gap-5">
+            <span class="text-[#5C2D0A] mon text-sm font-bold shrink-0 mt-1">0<%= index + 1 %></span>
+            <p class={[
+              "font-bold md:text-xl text-lg transition-colors duration-300 bangers tracking-wider",
+              if(@active_faq == faq.id, do: "text-[#E8C87A]", else: "text-white group-hover:text-[#E8C87A]")
+            ]}>
+              <%= faq.question %>
+            </p>
+          </div>
+          <div class={[
+            "h-8 w-8 flex items-center justify-center shrink-0 transition-all duration-300",
+            if(@active_faq == faq.id, do: "bg-[#E8C87A]", else: "bg-[#5C2D0A]")
+          ]}>
+            <%= if @active_faq == faq.id do %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#5C2D0A]" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
+              </svg>
+            <% else %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#E8C87A]" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            <% end %>
+          </div>
+        </div>
+
+        <%= if @active_faq == faq.id do %>
+          <div class="ml-[52px] mt-4 pr-12">
+            <p class="text-white/65 mon md:text-base text-sm leading-relaxed">
+              <%= faq.answer %>
+            </p>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <%!-- CTA at bottom --%>
+  <div class="text-center mt-16">
+    <p class="text-white/40 mon text-sm mb-4">Still have questions?</p>
+    <a
+      href="mailto:summertides@gmail.com"
+      class="inline-block border border-[#5C2D0A] hover:bg-[#5C2D0A] transition-all duration-300 text-[#E8C87A] font-bold uppercase tracking-widest px-8 py-3 bangers text-lg"
+    >
+      Contact Us
+    </a>
+  </div>
+</div>
+
+<%!-- Footer --%>
+<footer class="border-t py-12 w-full" style="background-color: #0D0800; border-color: #5C2D0A40;">
+  <div class="flex w-[90%] mx-auto md:flex-row flex-col gap-10 justify-between items-start">
+    <div class="md:w-[30%] w-full flex flex-col gap-4">
+      <p class="text-lg uppercase marker font-bold text-[#E8C87A]">About Summertides</p>
+      <p class="mon text-white/50 text-sm leading-relaxed">
+        Summer Tides is a celebration of African music and coastal culture at its finest.
+        Bringing together diverse sounds from across the continent at
+        Lost Beach Club, Malindi — Africa's premier beach festival experience.
+      </p>
+    </div>
+    <div class="md:w-[28%] w-full flex flex-col gap-3">
+      <p class="text-lg marker font-bold uppercase text-[#E8C87A]">Contact Info</p>
+      <div class="flex gap-3 text-white/50 mon text-sm items-center">
+        <span class="text-[#E8C87A]">📍</span>
+        <p>Lost Beach Club, Malindi, Kenya</p>
+      </div>
+      <div class="flex gap-3 text-white/50 mon text-sm items-center">
+        <span class="text-[#E8C87A]">📞</span>
+        <p>+254 736 888 800</p>
+      </div>
+      <div class="flex gap-3 text-white/50 mon text-sm items-center">
+        <span class="text-[#E8C87A]">✉️</span>
+        <p>summertides@gmail.com</p>
+      </div>
+      <div class="flex gap-3 text-white/50 mon text-sm items-center">
+        <span class="text-[#E8C87A]">📸</span>
+        <p>@summertides.fest</p>
+      </div>
+    </div>
+    <div class="md:w-[28%] w-full flex flex-col gap-3">
+      <p class="text-lg font-bold uppercase marker text-[#E8C87A]">Quick Links</p>
+      <div class="w-full mon grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+        <a href="/" class="text-white/50 hover:text-[#E8C87A] transition-all duration-300 flex items-center gap-1">
+          <span class="text-[#5C2D0A] font-bold text-xs">→</span> Home
+        </a>
+        <a href="/#about" class="text-white/50 hover:text-[#E8C87A] transition-all duration-300 flex items-center gap-1">
+          <span class="text-[#5C2D0A] font-bold text-xs">→</span> About
+        </a>
+        <a href="/#artists" class="text-white/50 hover:text-[#E8C87A] transition-all duration-300 flex items-center gap-1">
+          <span class="text-[#5C2D0A] font-bold text-xs">→</span> Lineup
+        </a>
+        <a href="/#tickets" class="text-white/50 hover:text-[#E8C87A] transition-all duration-300 flex items-center gap-1">
+          <span class="text-[#5C2D0A] font-bold text-xs">→</span> Tickets
+        </a>
+        <a href="/#gallery" class="text-white/50 hover:text-[#E8C87A] transition-all duration-300 flex items-center gap-1">
+          <span class="text-[#5C2D0A] font-bold text-xs">→</span> Gallery
+        </a>
+        <a href="/faqs" class="text-[#E8C87A] flex items-center gap-1 font-semibold">
+          <span class="text-[#5C2D0A] font-bold text-xs">→</span> FAQs
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="h-[1px] w-[90%] mx-auto my-8" style="background-color: #5C2D0A40;"></div>
+
+  <div class="w-[90%] mx-auto flex justify-between md:flex-row flex-col gap-4 items-center">
+    <div class="flex items-center gap-4">
+      <img src="/images/summertides.png" class="w-[70px] object-contain opacity-80" />
+      <div class="text-white/30 mon text-xs flex gap-2 items-center">
+        <span class="cursor-pointer hover:text-[#E8C87A]/60 transition-colors">Privacy Policy</span>
+        <span>·</span>
+        <span class="cursor-pointer hover:text-[#E8C87A]/60 transition-colors">Terms & Conditions</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="flex flex-row gap-2">
+        <a class="text-white p-2 transition-all duration-300" style="background-color: #5C2D0A;" href="https://www.instagram.com/summertides.fest" target="_blank" rel="noopener noreferrer">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+        <a class="text-white p-2 transition-all duration-300" style="background-color: #5C2D0A;" href="https://twitter.com/Summertidesfest" target="_blank" rel="noopener noreferrer">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a class="text-white p-2 transition-all duration-300" style="background-color: #5C2D0A;" href="https://youtube.com/@airbeatkenya7281" target="_blank" rel="noopener noreferrer">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+      </div>
+      <p class="text-white/30 mon text-xs">© 2026 Airbeat Global. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

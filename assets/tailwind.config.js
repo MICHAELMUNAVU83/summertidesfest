@@ -15,6 +15,16 @@ module.exports = {
     extend: {
       colors: {
         brand: "#FD4F00",
+        teal: "#E8C87A",
+        ocean: "#5C2D0A",
+        coral: "#F97316",
+        sand: "#F59E0B",
+        parchment: "#E8C87A",
+        "parchment-dark": "#C9A04E",
+        "beach-brown": "#5C2D0A",
+        dark: "#3A3A3A",
+        rose: "#551E30",
+        navy: "#0A1628",
       }
     },
   },

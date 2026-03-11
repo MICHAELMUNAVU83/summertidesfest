@@ -17,7 +17,7 @@ defmodule SummertidesfestWeb do
   those modules here.
   """
 
-  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
+  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt artists videos)
 
   def router do
     quote do
@@ -89,8 +89,6 @@ defmodule SummertidesfestWeb do
       import Phoenix.HTML
       # Core UI components
       import SummertidesfestWeb.CoreComponents
-
-      import SummertidesfestWeb.HomeComponents
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
