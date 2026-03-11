@@ -1,6 +1,8 @@
 defmodule SummertidesfestWeb.Router do
   use SummertidesfestWeb, :router
 
+  import SummertidesfestWeb.UserAuth
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -8,6 +10,7 @@ defmodule SummertidesfestWeb.Router do
     plug :put_root_layout, html: {SummertidesfestWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :fetch_current_user
   end
 
   pipeline :api do
@@ -19,6 +22,18 @@ defmodule SummertidesfestWeb.Router do
 
     live "/", HomeLive.Index, :index
     live "/faqs", FaqsLive.Index, :index
+    live "/merch", MerchLive.Index, :index
+  end
+
+  scope "/admin", SummertidesfestWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :admin,
+      root_layout: {SummertidesfestWeb.Layouts, :admin_root},
+      on_mount: [{SummertidesfestWeb.UserAuth, :ensure_authenticated}] do
+      live "/orders", Admin.OrdersLive.Index, :index
+      live "/products", Admin.ProductsLive.Index, :index
+    end
   end
 
   # Other scopes may use custom stacks.
@@ -40,6 +55,43 @@ defmodule SummertidesfestWeb.Router do
 
       live_dashboard "/dashboard", metrics: SummertidesfestWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
+    end
+  end
+
+  ## Authentication routes
+
+  scope "/", SummertidesfestWeb do
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
+
+    live_session :redirect_if_user_is_authenticated,
+      on_mount: [{SummertidesfestWeb.UserAuth, :redirect_if_user_is_authenticated}] do
+      live "/users/log_in", UserLoginLive, :new
+      live "/users/reset_password", UserForgotPasswordLive, :new
+      live "/users/reset_password/:token", UserResetPasswordLive, :edit
+    end
+
+    post "/users/log_in", UserSessionController, :create
+  end
+
+  scope "/", SummertidesfestWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :require_authenticated_user,
+      on_mount: [{SummertidesfestWeb.UserAuth, :ensure_authenticated}] do
+      live "/users/settings", UserSettingsLive, :edit
+      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+    end
+  end
+
+  scope "/", SummertidesfestWeb do
+    pipe_through [:browser]
+
+    delete "/users/log_out", UserSessionController, :delete
+
+    live_session :current_user,
+      on_mount: [{SummertidesfestWeb.UserAuth, :mount_current_user}] do
+      live "/users/confirm/:token", UserConfirmationLive, :edit
+      live "/users/confirm", UserConfirmationInstructionsLive, :new
     end
   end
 end

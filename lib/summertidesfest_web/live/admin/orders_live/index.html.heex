@@ -1,0 +1,347 @@
+<%!-- Mobile sidebar overlay --%>
+<%= if @sidebar_open do %>
+  <div phx-click="toggle_sidebar" class="fixed inset-0 z-20 bg-black/40 lg:hidden"></div>
+<% end %>
+
+<div class="flex h-screen overflow-hidden">
+
+  <%!-- ===================== SIDEBAR ===================== --%>
+  <aside class={[
+    "fixed inset-y-0 left-0 z-30 flex flex-col w-56 bg-white border-r border-stone-200 transition-transform duration-200 lg:static lg:translate-x-0",
+    if(@sidebar_open, do: "translate-x-0", else: "-translate-x-full")
+  ]}>
+    <%!-- Brand --%>
+    <div class="flex items-center gap-2.5 px-5 h-14 border-b border-stone-100 flex-shrink-0">
+      <div class="w-8 h-8 rounded-lg bg-[#5C2D0A] flex items-center justify-center flex-shrink-0">
+        <img src="/images/summertides.png" alt="" class="h-5 w-auto" />
+      </div>
+      <div class="min-w-0">
+        <p class="text-[#5C2D0A] font-black text-sm leading-none truncate">Summer Tides</p>
+        <p class="text-stone-400 text-[10px] uppercase tracking-widest mt-0.5">Admin</p>
+      </div>
+    </div>
+
+    <%!-- Navigation --%>
+    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
+      <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 px-3 pt-1 pb-2">Menu</p>
+
+      <a href="/admin/orders"
+        class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[#5C2D0A]/10 text-[#5C2D0A] text-sm font-semibold">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+        </svg>
+        <span class="flex-1">Orders</span>
+        <%= if @summary.pending > 0 do %>
+          <span class="bg-amber-100 text-amber-700 text-xs font-bold px-1.5 py-0.5 rounded-full"><%= @summary.pending %></span>
+        <% end %>
+      </a>
+
+      <a href="/admin/products"
+        class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-stone-500 hover:bg-stone-50 hover:text-stone-800 text-sm font-medium transition-colors">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+        </svg>
+        Products
+      </a>
+
+      <a href="/merch"
+        class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-stone-500 hover:bg-stone-50 hover:text-stone-800 text-sm font-medium transition-colors">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+        </svg>
+        View Shop
+      </a>
+
+      <div class="pt-4">
+        <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 px-3 pb-2">Other</p>
+
+        <a href="/"
+          class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-stone-400 hover:bg-stone-50 hover:text-stone-600 text-sm font-medium transition-colors">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          </svg>
+          Festival Site
+        </a>
+
+        <a href="/users/log_out"
+          data-method="delete"
+          class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-stone-400 hover:bg-red-50 hover:text-red-500 text-sm font-medium transition-colors">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+          </svg>
+          Sign Out
+        </a>
+      </div>
+    </nav>
+
+    <div class="px-5 py-3 border-t border-stone-100 flex-shrink-0">
+      <p class="text-stone-300 text-xs">© Summer Tides 2026</p>
+    </div>
+  </aside>
+
+  <%!-- ===================== MAIN ===================== --%>
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+
+    <%!-- Top bar --%>
+    <header class="flex-shrink-0 h-14 bg-white border-b border-stone-200 flex items-center px-5 gap-4">
+      <button phx-click="toggle_sidebar"
+        class="lg:hidden p-1.5 rounded-md text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+
+      <span class="text-stone-700 font-semibold text-sm flex-1">Orders</span>
+
+      <span class="text-xs text-stone-400 hidden sm:block">
+        <%= @summary.total %> orders · KSH <%= @summary.revenue %>
+      </span>
+    </header>
+
+    <%!-- Scrollable page body --%>
+    <div class="flex-1 overflow-y-auto">
+      <div class="max-w-5xl mx-auto px-5 md:px-8 py-8">
+
+        <%!-- Page heading --%>
+        <div class="mb-7">
+          <h1 class="text-xl font-black text-stone-800">Orders</h1>
+          <p class="text-stone-400 text-sm mt-0.5">Manage merchandise orders from customers</p>
+        </div>
+
+        <%!-- Stats --%>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-7">
+          <div class="bg-white rounded-xl border border-stone-200 p-4">
+            <p class="text-xs font-semibold text-stone-400 uppercase tracking-wider">Total</p>
+            <p class="text-2xl font-black text-stone-800 mt-1"><%= @summary.total %></p>
+          </div>
+          <div class="bg-white rounded-xl border border-amber-100 p-4">
+            <p class="text-xs font-semibold text-amber-500 uppercase tracking-wider">Pending</p>
+            <p class="text-2xl font-black text-amber-600 mt-1"><%= @summary.pending %></p>
+          </div>
+          <div class="bg-white rounded-xl border border-stone-200 p-4">
+            <p class="text-xs font-semibold text-stone-400 uppercase tracking-wider">Processing</p>
+            <p class="text-2xl font-black text-stone-800 mt-1"><%= Enum.count(@orders, &(&1.status == "processing")) %></p>
+          </div>
+          <div class="bg-white rounded-xl border border-[#5C2D0A]/15 p-4 col-span-2 lg:col-span-1">
+            <p class="text-xs font-semibold text-[#5C2D0A]/70 uppercase tracking-wider">Revenue</p>
+            <p class="text-xl font-black text-[#5C2D0A] mt-1">KSH <%= @summary.revenue %></p>
+          </div>
+        </div>
+
+        <%!-- Filter tabs --%>
+        <div class="inline-flex items-center gap-0.5 bg-stone-100 rounded-lg p-1 mb-5">
+          <%= for status <- ["all", "pending", "processing", "shipped", "delivered", "cancelled"] do %>
+            <button
+              phx-click="filter_status"
+              phx-value-status={status}
+              class={[
+                "px-3 py-1.5 rounded-md text-xs font-semibold capitalize transition-all whitespace-nowrap",
+                if(@filter_status == status,
+                  do: "bg-white text-stone-800 shadow-sm",
+                  else: "text-stone-500 hover:text-stone-700"
+                )
+              ]}
+            >
+              <%= status %>
+            </button>
+          <% end %>
+        </div>
+
+        <%!-- Table / Empty state --%>
+        <%= if Enum.empty?(filtered_orders(@orders, @filter_status)) do %>
+          <div class="bg-white rounded-xl border border-stone-200 py-20 text-center">
+            <div class="text-3xl mb-3">📦</div>
+            <p class="text-stone-600 font-semibold">No orders yet</p>
+            <p class="text-stone-400 text-sm mt-1">Orders will appear here once customers purchase</p>
+          </div>
+        <% else %>
+
+          <%!-- Desktop table --%>
+          <div class="hidden md:block bg-white rounded-xl border border-stone-200 overflow-hidden">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-stone-100">
+                  <th class="text-left px-5 py-3 text-[10px] font-bold uppercase tracking-widest text-stone-400">Ref</th>
+                  <th class="text-left px-5 py-3 text-[10px] font-bold uppercase tracking-widest text-stone-400">Customer</th>
+                  <th class="text-left px-5 py-3 text-[10px] font-bold uppercase tracking-widest text-stone-400">Items</th>
+                  <th class="text-left px-5 py-3 text-[10px] font-bold uppercase tracking-widest text-stone-400">Total</th>
+                  <th class="text-left px-5 py-3 text-[10px] font-bold uppercase tracking-widest text-stone-400">Status</th>
+                  <th class="text-left px-5 py-3 text-[10px] font-bold uppercase tracking-widest text-stone-400">Date</th>
+                  <th class="px-5 py-3"></th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-stone-50">
+                <%= for order <- filtered_orders(@orders, @filter_status) do %>
+                  <tr class="hover:bg-stone-50/60 transition-colors">
+                    <td class="px-5 py-3.5">
+                      <span class="font-mono text-[#5C2D0A] text-xs font-bold"><%= order.reference %></span>
+                    </td>
+                    <td class="px-5 py-3.5">
+                      <p class="text-stone-800 font-semibold text-sm"><%= order.customer_name %></p>
+                      <p class="text-stone-400 text-xs mt-0.5"><%= order.customer_email %></p>
+                    </td>
+                    <td class="px-5 py-3.5 text-stone-400 text-xs">
+                      <%= length(order.order_items) %> item<%= if length(order.order_items) != 1, do: "s" %>
+                    </td>
+                    <td class="px-5 py-3.5">
+                      <span class="text-stone-800 font-bold">KSH <%= order.total %></span>
+                    </td>
+                    <td class="px-5 py-3.5">
+                      <span class={"inline-flex text-xs font-semibold px-2 py-0.5 rounded-full #{status_badge(order.status)}"}>
+                        <%= order.status %>
+                      </span>
+                    </td>
+                    <td class="px-5 py-3.5 text-stone-400 text-xs">
+                      <%= format_date(order.inserted_at) %>
+                    </td>
+                    <td class="px-5 py-3.5">
+                      <button
+                        phx-click="view_order"
+                        phx-value-id={order.id}
+                        class="text-[#5C2D0A] hover:text-[#3A1A04] text-xs font-semibold hover:underline transition-colors"
+                      >
+                        View →
+                      </button>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+
+          <%!-- Mobile cards --%>
+          <div class="md:hidden space-y-2">
+            <%= for order <- filtered_orders(@orders, @filter_status) do %>
+              <div
+                phx-click="view_order"
+                phx-value-id={order.id}
+                class="bg-white border border-stone-200 rounded-xl p-4 cursor-pointer active:bg-stone-50"
+              >
+                <div class="flex items-start justify-between gap-3 mb-2.5">
+                  <div>
+                    <p class="font-mono text-[#5C2D0A] text-xs font-bold"><%= order.reference %></p>
+                    <p class="text-stone-800 font-semibold mt-0.5"><%= order.customer_name %></p>
+                    <p class="text-stone-400 text-xs"><%= order.customer_email %></p>
+                  </div>
+                  <span class={"inline-flex text-xs font-semibold px-2 py-0.5 rounded-full #{status_badge(order.status)}"}>
+                    <%= order.status %>
+                  </span>
+                </div>
+                <div class="flex justify-between items-center pt-2.5 border-t border-stone-100">
+                  <p class="text-stone-400 text-xs"><%= length(order.order_items) %> item(s) · <%= format_date(order.inserted_at) %></p>
+                  <p class="text-stone-800 font-bold text-sm">KSH <%= order.total %></p>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<%!-- ===================== ORDER DETAIL PANEL ===================== --%>
+<%= if @selected_order do %>
+  <div phx-click="close_order" class="fixed inset-0 z-40 bg-black/20 lg:bg-black/10"></div>
+<% end %>
+
+<div class={[
+  "fixed inset-y-0 right-0 z-50 flex flex-col w-full sm:w-[420px] bg-white border-l border-stone-200 shadow-xl transition-transform duration-200",
+  if(@selected_order, do: "translate-x-0", else: "translate-x-full")
+]}>
+  <%= if @selected_order do %>
+    <%!-- Header --%>
+    <div class="flex items-center justify-between px-6 py-4 border-b border-stone-100 flex-shrink-0">
+      <div>
+        <p class="font-mono text-xs text-[#5C2D0A] font-bold"><%= @selected_order.reference %></p>
+        <h2 class="text-stone-800 font-black text-base leading-tight mt-0.5"><%= @selected_order.customer_name %></h2>
+      </div>
+      <button phx-click="close_order"
+        class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors text-lg">
+        ×
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-6 py-5 space-y-5">
+
+      <%!-- Customer info --%>
+      <div>
+        <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-2">Customer</p>
+        <div class="bg-stone-50 rounded-xl divide-y divide-stone-100">
+          <div class="flex items-center gap-3 px-4 py-2.5">
+            <span class="text-stone-400 text-xs w-10 flex-shrink-0">Email</span>
+            <span class="text-stone-700 text-sm truncate"><%= @selected_order.customer_email %></span>
+          </div>
+          <%= if @selected_order.customer_phone do %>
+            <div class="flex items-center gap-3 px-4 py-2.5">
+              <span class="text-stone-400 text-xs w-10 flex-shrink-0">Phone</span>
+              <span class="text-stone-700 text-sm"><%= @selected_order.customer_phone %></span>
+            </div>
+          <% end %>
+          <div class="flex items-center gap-3 px-4 py-2.5">
+            <span class="text-stone-400 text-xs w-10 flex-shrink-0">Date</span>
+            <span class="text-stone-500 text-sm"><%= format_date(@selected_order.inserted_at) %></span>
+          </div>
+        </div>
+      </div>
+
+      <%!-- Items --%>
+      <div>
+        <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-2">Order Items</p>
+        <div class="bg-stone-50 rounded-xl overflow-hidden">
+          <%= for item <- @selected_order.order_items do %>
+            <div class="flex items-center gap-3 px-4 py-3 border-b border-stone-100 last:border-0">
+              <div class="w-9 h-9 rounded-lg bg-stone-200 overflow-hidden flex-shrink-0">
+                <%= if item.product && length(item.product.images) > 0 do %>
+                  <img src={hd(item.product.images)} class="w-full h-full object-cover" alt={item.product_name} />
+                <% else %>
+                  <div class="w-full h-full flex items-center justify-center text-base">👕</div>
+                <% end %>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-stone-700 text-sm font-semibold truncate"><%= item.product_name %></p>
+                <p class="text-stone-400 text-xs">Size: <%= item.size || "One Size" %> · Qty: <%= item.quantity %></p>
+              </div>
+              <p class="text-stone-700 font-bold text-sm flex-shrink-0">KSH <%= item.unit_price * item.quantity %></p>
+            </div>
+          <% end %>
+          <div class="flex justify-between items-center px-4 py-3 bg-stone-100">
+            <span class="text-stone-500 font-semibold text-sm">Total</span>
+            <span class="text-[#5C2D0A] font-black text-lg">KSH <%= @selected_order.total %></span>
+          </div>
+        </div>
+      </div>
+
+      <%!-- Status --%>
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400">Status</p>
+          <span class={"inline-flex text-xs font-semibold px-2 py-0.5 rounded-full #{status_badge(@selected_order.status)}"}>
+            <%= @selected_order.status %>
+          </span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <%= for status <- ["pending", "processing", "shipped", "delivered", "cancelled"] do %>
+            <button
+              phx-click="update_status"
+              phx-value-id={@selected_order.id}
+              phx-value-status={status}
+              disabled={@selected_order.status == status}
+              class={[
+                "py-2 px-3 rounded-lg text-xs font-semibold capitalize border transition-all",
+                if(@selected_order.status == status,
+                  do: "opacity-30 cursor-not-allowed bg-stone-50 border-stone-100 text-stone-400",
+                  else: "#{status_badge(status)} hover:opacity-80"
+                )
+              ]}
+            >
+              <%= status %>
+            </button>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  <% end %>
+</div>

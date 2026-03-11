@@ -1,0 +1,431 @@
+<%!-- Mobile overlay --%>
+<%= if @sidebar_open do %>
+  <div phx-click="toggle_sidebar" class="fixed inset-0 z-20 bg-black/40 lg:hidden"></div>
+<% end %>
+
+<div class="flex h-screen overflow-hidden">
+
+  <%!-- ===================== SIDEBAR ===================== --%>
+  <aside class={[
+    "fixed inset-y-0 left-0 z-30 flex flex-col w-56 bg-white border-r border-stone-200 transition-transform duration-200 lg:static lg:translate-x-0",
+    if(@sidebar_open, do: "translate-x-0", else: "-translate-x-full")
+  ]}>
+    <div class="flex items-center gap-2.5 px-5 h-14 border-b border-stone-100 flex-shrink-0">
+      <div class="w-8 h-8 rounded-lg bg-[#5C2D0A] flex items-center justify-center flex-shrink-0">
+        <img src="/images/summertides.png" alt="" class="h-5 w-auto" />
+      </div>
+      <div class="min-w-0">
+        <p class="text-[#5C2D0A] font-black text-sm leading-none truncate">Summer Tides</p>
+        <p class="text-stone-400 text-[10px] uppercase tracking-widest mt-0.5">Admin</p>
+      </div>
+    </div>
+
+    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
+      <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 px-3 pt-1 pb-2">Menu</p>
+
+      <a href="/admin/orders" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-stone-500 hover:bg-stone-50 hover:text-stone-800 text-sm font-medium transition-colors">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+        </svg>
+        Orders
+      </a>
+
+      <a href="/admin/products" class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[#5C2D0A]/10 text-[#5C2D0A] text-sm font-semibold">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+        </svg>
+        Products
+      </a>
+
+      <a href="/merch" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-stone-500 hover:bg-stone-50 hover:text-stone-800 text-sm font-medium transition-colors">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+        </svg>
+        View Shop
+      </a>
+
+      <div class="pt-4">
+        <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 px-3 pb-2">Other</p>
+        <a href="/" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-stone-400 hover:bg-stone-50 hover:text-stone-600 text-sm font-medium transition-colors">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          </svg>
+          Festival Site
+        </a>
+        <a href="/users/log_out" data-method="delete" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-stone-400 hover:bg-red-50 hover:text-red-500 text-sm font-medium transition-colors">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+          </svg>
+          Sign Out
+        </a>
+      </div>
+    </nav>
+
+    <div class="px-5 py-3 border-t border-stone-100 flex-shrink-0">
+      <p class="text-stone-300 text-xs">© Summer Tides 2026</p>
+    </div>
+  </aside>
+
+  <%!-- ===================== MAIN ===================== --%>
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+
+    <%!-- Top bar --%>
+    <header class="flex-shrink-0 h-14 bg-white border-b border-stone-200 flex items-center px-5 gap-4">
+      <button phx-click="toggle_sidebar" class="lg:hidden p-1.5 rounded-md text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+      <span class="text-stone-500 text-sm flex-1">Products</span>
+      <button phx-click="new_product"
+        class="flex items-center gap-1.5 bg-[#5C2D0A] text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-[#3A1A04] transition-colors">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+        </svg>
+        Add Product
+      </button>
+    </header>
+
+    <div class="flex-1 overflow-y-auto bg-stone-50">
+      <div class="max-w-5xl mx-auto px-5 md:px-8 py-8">
+
+        <%!-- Page heading + stats --%>
+        <div class="flex items-start justify-between gap-4 mb-6">
+          <div>
+            <h1 class="text-xl font-black text-stone-800">Products</h1>
+            <p class="text-stone-400 text-sm mt-0.5">
+              <%= length(@products) %> total ·
+              <%= Enum.count(@products, & &1.in_stock) %> in stock ·
+              <%= Enum.count(@products, &(not &1.in_stock)) %> sold out
+            </p>
+          </div>
+        </div>
+
+        <%!-- Category filter chips --%>
+        <div class="flex items-center gap-2 flex-wrap mb-6">
+          <%= for cat <- ["All" | @categories] do %>
+            <button
+              phx-click="filter_category"
+              phx-value-category={cat}
+              class={[
+                "px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all",
+                if(@filter_category == cat,
+                  do: "bg-[#5C2D0A] text-white border-[#5C2D0A]",
+                  else: "bg-white text-stone-500 border-stone-200 hover:border-stone-400 hover:text-stone-700"
+                )
+              ]}
+            >
+              <%= cat %>
+              <%= if cat != "All" do %>
+                <span class={["ml-1 font-normal", if(@filter_category == cat, do: "text-white/70", else: "text-stone-400")]}>
+                  <%= Enum.count(@products, &(&1.category == cat)) %>
+                </span>
+              <% end %>
+            </button>
+          <% end %>
+        </div>
+
+        <%!-- Products --%>
+        <%= if Enum.empty?(@products) do %>
+          <div class="bg-white rounded-2xl border border-stone-200 py-24 text-center">
+            <div class="w-16 h-16 bg-stone-100 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">👕</div>
+            <p class="text-stone-700 font-bold text-lg">No products yet</p>
+            <p class="text-stone-400 text-sm mt-1 mb-6">Add your first product to start selling</p>
+            <button phx-click="new_product"
+              class="bg-[#5C2D0A] text-white text-sm font-semibold px-6 py-2.5 rounded-lg hover:bg-[#3A1A04] transition-colors">
+              + Add First Product
+            </button>
+          </div>
+        <% else %>
+          <%!-- Product grid --%>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <%= for product <- filter_products(@products, @filter_category) do %>
+              <div class="bg-white rounded-2xl border border-stone-200 overflow-hidden hover:border-stone-300 hover:shadow-sm transition-all group">
+
+                <%!-- Image area --%>
+                <div class="relative aspect-[4/3] bg-stone-100 overflow-hidden">
+                  <%= if length(product.images) > 0 do %>
+                    <img src={hd(product.images)} alt={product.name}
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <%!-- Extra images count badge --%>
+                    <%= if length(product.images) > 1 do %>
+                      <div class="absolute bottom-2 right-2 bg-black/50 text-white text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm">
+                        +<%= length(product.images) - 1 %> photos
+                      </div>
+                    <% end %>
+                  <% else %>
+                    <div class="w-full h-full flex flex-col items-center justify-center gap-2 text-stone-300">
+                      <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                      </svg>
+                      <span class="text-xs">No images</span>
+                    </div>
+                  <% end %>
+
+                  <%!-- Status badge on image --%>
+                  <div class="absolute top-2.5 left-2.5">
+                    <%= if product.in_stock do %>
+                      <span class="inline-flex items-center gap-1 bg-white/90 backdrop-blur-sm text-emerald-700 text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> In Stock
+                      </span>
+                    <% else %>
+                      <span class="inline-flex items-center gap-1 bg-white/90 backdrop-blur-sm text-red-600 text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">
+                        <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span> Sold Out
+                      </span>
+                    <% end %>
+                  </div>
+
+                  <%!-- Action buttons — slide down on hover --%>
+                  <div class="absolute inset-x-0 bottom-0 p-3 flex gap-2 translate-y-full group-hover:translate-y-0 transition-transform duration-200">
+                    <button phx-click="edit_product" phx-value-id={product.id}
+                      class="flex-1 bg-white text-stone-700 font-semibold text-xs py-2 rounded-lg shadow hover:bg-stone-50 transition-colors">
+                      Edit
+                    </button>
+                    <button phx-click="delete_product" phx-value-id={product.id}
+                      data-confirm={"Delete \"#{product.name}\"? This cannot be undone."}
+                      class="flex-1 bg-red-500 text-white font-semibold text-xs py-2 rounded-lg shadow hover:bg-red-600 transition-colors">
+                      Delete
+                    </button>
+                  </div>
+                </div>
+
+                <%!-- Card body --%>
+                <div class="p-4">
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <div class="min-w-0">
+                      <p class="text-stone-800 font-bold text-sm leading-tight truncate"><%= product.name %></p>
+                      <%= if product.description do %>
+                        <p class="text-stone-400 text-xs mt-0.5 line-clamp-1"><%= product.description %></p>
+                      <% end %>
+                    </div>
+                    <span class="bg-stone-100 text-stone-500 text-[10px] font-semibold px-2 py-0.5 rounded-full flex-shrink-0 mt-0.5">
+                      <%= product.category %>
+                    </span>
+                  </div>
+
+                  <div class="flex items-center justify-between mt-3">
+                    <span class="text-[#5C2D0A] font-black text-base">KSH <%= product.price %></span>
+                    <div class="flex items-center gap-2">
+                      <%= if length(product.sizes) > 0 and product.sizes != ["One Size"] do %>
+                        <span class="text-stone-400 text-[10px]"><%= Enum.join(product.sizes, " · ") %></span>
+                      <% end %>
+                      <span class="text-stone-300 text-xs">·</span>
+                      <span class="text-stone-400 text-xs"><%= product.stock_count %> left</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            <% end %>
+          </div>
+
+          <%!-- Empty filter state --%>
+          <%= if Enum.empty?(filter_products(@products, @filter_category)) do %>
+            <div class="text-center py-16 text-stone-400">
+              <p class="font-semibold">No products in this category</p>
+            </div>
+          <% end %>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<%!-- ===================== PRODUCT FORM PANEL ===================== --%>
+<%= if @panel == :form do %>
+  <div phx-click="close_panel" class="fixed inset-0 z-40 bg-black/20"></div>
+<% end %>
+
+<div class={[
+  "fixed inset-y-0 right-0 z-50 flex flex-col w-full sm:w-[500px] bg-white border-l border-stone-200 shadow-xl transition-transform duration-200",
+  if(@panel == :form, do: "translate-x-0", else: "translate-x-full")
+]}>
+  <%= if @panel == :form do %>
+    <div class="flex items-center justify-between px-6 py-4 border-b border-stone-100 flex-shrink-0">
+      <div>
+        <h2 class="text-stone-800 font-black text-base">
+          <%= if @editing, do: "Edit Product", else: "New Product" %>
+        </h2>
+        <%= if @editing do %>
+          <p class="text-stone-400 text-xs mt-0.5"><%= @editing.name %></p>
+        <% end %>
+      </div>
+      <button phx-click="close_panel"
+        class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-100 text-xl transition-colors">
+        ×
+      </button>
+    </div>
+
+    <form id="product-form" phx-submit="save_product" phx-change="validate_upload" class="flex-1 overflow-y-auto px-6 py-5 space-y-5">
+
+      <%!-- Name --%>
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5">
+          Product Name <span class="text-red-400">*</span>
+        </label>
+        <input type="text" value={@form["name"]} phx-change="update_field" phx-value-field="name"
+          placeholder="e.g. Summer Love Classic Tee"
+          class="w-full border border-stone-200 rounded-lg px-3.5 py-2.5 text-sm text-stone-800 placeholder-stone-300 focus:outline-none focus:ring-2 focus:ring-[#5C2D0A]/20 focus:border-[#5C2D0A]/50 transition-colors" />
+        <%= if @form_errors["name"] do %>
+          <p class="text-red-500 text-xs mt-1"><%= @form_errors["name"] %></p>
+        <% end %>
+      </div>
+
+      <%!-- Description --%>
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5">Description</label>
+        <textarea phx-change="update_field" phx-value-field="description"
+          placeholder="Describe the product..." rows="3"
+          class="w-full border border-stone-200 rounded-lg px-3.5 py-2.5 text-sm text-stone-800 placeholder-stone-300 focus:outline-none focus:ring-2 focus:ring-[#5C2D0A]/20 focus:border-[#5C2D0A]/50 transition-colors resize-none"><%= @form["description"] %></textarea>
+      </div>
+
+      <%!-- Price + Category --%>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5">
+            Price (KSH) <span class="text-red-400">*</span>
+          </label>
+          <input type="number" value={@form["price"]} phx-change="update_field" phx-value-field="price"
+            placeholder="2500" min="0"
+            class="w-full border border-stone-200 rounded-lg px-3.5 py-2.5 text-sm text-stone-800 placeholder-stone-300 focus:outline-none focus:ring-2 focus:ring-[#5C2D0A]/20 focus:border-[#5C2D0A]/50 transition-colors" />
+          <%= if @form_errors["price"] do %>
+            <p class="text-red-500 text-xs mt-1"><%= @form_errors["price"] %></p>
+          <% end %>
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5">
+            Category <span class="text-red-400">*</span>
+          </label>
+          <select phx-change="update_field" phx-value-field="category"
+            class="w-full border border-stone-200 rounded-lg px-3.5 py-2.5 text-sm text-stone-800 bg-white focus:outline-none focus:ring-2 focus:ring-[#5C2D0A]/20 focus:border-[#5C2D0A]/50 transition-colors">
+            <%= for cat <- @categories do %>
+              <option value={cat} selected={@form["category"] == cat}><%= cat %></option>
+            <% end %>
+          </select>
+        </div>
+      </div>
+
+      <%!-- Sizes --%>
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">Sizes</label>
+        <div class="flex flex-wrap gap-2">
+          <%= for size <- @all_sizes do %>
+            <button type="button" phx-click="toggle_size" phx-value-size={size}
+              class={[
+                "px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all",
+                if(size in (@form["sizes"] || []),
+                  do: "bg-[#5C2D0A] text-white border-[#5C2D0A]",
+                  else: "bg-white text-stone-500 border-stone-200 hover:border-stone-400"
+                )
+              ]}>
+              <%= size %>
+            </button>
+          <% end %>
+        </div>
+      </div>
+
+      <%!-- Images --%>
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5">Images</label>
+
+        <%!-- Existing saved images --%>
+        <%= if length(@form["images"] || []) > 0 do %>
+          <div class="flex flex-wrap gap-2 mb-3">
+            <%= for {img, idx} <- Enum.with_index(@form["images"] || []) do %>
+              <div class="relative group w-20 h-20">
+                <div class="w-full h-full rounded-xl border border-stone-200 overflow-hidden bg-stone-100">
+                  <img src={img} alt="" class="w-full h-full object-cover" />
+                </div>
+                <button type="button" phx-click="remove_image" phx-value-index={idx}
+                  class="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white rounded-full text-xs flex items-center justify-center shadow opacity-0 group-hover:opacity-100 transition-opacity font-bold">
+                  ×
+                </button>
+                <%= if idx == 0 do %>
+                  <div class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[9px] text-center py-0.5 rounded-b-xl">Main</div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+
+        <%!-- File input --%>
+        <.live_file_input upload={@uploads.product_images}
+          class="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm text-stone-600 bg-white file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[#5C2D0A] file:text-white hover:file:bg-[#3A1A04] cursor-pointer" />
+        <p class="text-stone-400 text-xs mt-1">JPG, PNG, WebP · up to <%= @uploads.product_images.max_entries %> files · 10 MB max</p>
+
+        <%!-- Queued files --%>
+        <%= if length(@uploads.product_images.entries) > 0 do %>
+          <div class="mt-2 space-y-1.5">
+            <%= for entry <- @uploads.product_images.entries do %>
+              <div class="bg-stone-50 border border-stone-200 rounded-lg overflow-hidden">
+                <div class="flex items-center gap-3 px-3 py-2">
+                  <div class="w-10 h-10 rounded-lg bg-stone-200 overflow-hidden flex-shrink-0 border border-stone-100">
+                    <.live_img_preview entry={entry} class="w-full h-full object-cover" />
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-stone-700 text-xs font-medium truncate"><%= entry.client_name %></p>
+                    <p class="text-stone-400 text-[10px] mt-0.5">
+                      <%= if entry.progress == 100, do: "✓ Ready", else: "Will upload on save" %>
+                    </p>
+                  </div>
+                  <button type="button" phx-click="cancel_upload" phx-value-ref={entry.ref}
+                    class="text-stone-300 hover:text-red-400 text-xl leading-none flex-shrink-0 transition-colors">×</button>
+                </div>
+                <%= if entry.progress > 0 and entry.progress < 100 do %>
+                  <div class="h-0.5 bg-stone-200">
+                    <div class="h-0.5 bg-[#5C2D0A] transition-all" style={"width: #{entry.progress}%"}></div>
+                  </div>
+                <% end %>
+              </div>
+              <%= for err <- upload_errors(@uploads.product_images, entry) do %>
+                <p class="text-red-500 text-xs px-1 mt-0.5"><%= friendly_error(err) %></p>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <%= for err <- upload_errors(@uploads.product_images) do %>
+          <p class="text-red-500 text-xs mt-1"><%= friendly_error(err) %></p>
+        <% end %>
+      </div>
+
+      <%!-- Stock --%>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5">Stock Count</label>
+          <input type="number" value={@form["stock_count"]} phx-change="update_field" phx-value-field="stock_count"
+            min="0"
+            class="w-full border border-stone-200 rounded-lg px-3.5 py-2.5 text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-[#5C2D0A]/20 focus:border-[#5C2D0A]/50 transition-colors" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5">Availability</label>
+          <select phx-change="update_field" phx-value-field="in_stock"
+            class="w-full border border-stone-200 rounded-lg px-3.5 py-2.5 text-sm text-stone-800 bg-white focus:outline-none focus:ring-2 focus:ring-[#5C2D0A]/20 focus:border-[#5C2D0A]/50 transition-colors">
+            <option value="true" selected={@form["in_stock"] == "true"}>In Stock</option>
+            <option value="false" selected={@form["in_stock"] == "false"}>Sold Out</option>
+          </select>
+        </div>
+      </div>
+
+    </form>
+
+    <%!-- Footer --%>
+    <div class="flex-shrink-0 px-6 py-4 border-t border-stone-100 flex gap-3">
+      <button type="submit" form="product-form"
+        class="flex-1 bg-[#5C2D0A] text-white font-bold py-2.5 rounded-lg hover:bg-[#3A1A04] transition-colors text-sm flex items-center justify-center gap-2">
+        <%= if length(@uploads.product_images.entries) > 0 do %>
+          <svg class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+          </svg>
+        <% end %>
+        <%= if @editing, do: "Save Changes", else: "Create Product" %>
+      </button>
+      <button type="button" phx-click="close_panel"
+        class="px-5 py-2.5 border border-stone-200 text-stone-500 rounded-lg hover:bg-stone-50 transition-colors text-sm font-medium">
+        Cancel
+      </button>
+    </div>
+  <% end %>
+</div>
