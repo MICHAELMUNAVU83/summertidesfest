@@ -3,13 +3,14 @@ alias Summertidesfest.{Repo, Accounts, Shop}
 # ---------------------------------------------------------------------------
 # Admin user
 # ---------------------------------------------------------------------------
-email = "admin@summertidesfest.com"
-password = "SummerLove2026!"
+email = "admin@gmail.com"
+password = "123456"
 
 case Accounts.get_user_by_email(email) do
   nil ->
     {:ok, _user} = Accounts.register_user(%{email: email, password: password})
     IO.puts("✓ Admin user created: #{email}")
+
   _existing ->
     IO.puts("→ Admin user already exists: #{email}")
 end
@@ -20,7 +21,8 @@ end
 products = [
   %{
     name: "Summer Love Classic Tee",
-    description: "The iconic Summer Tides 2026 tee. 100% cotton, relaxed fit. Made for the beach, made for the crowd.",
+    description:
+      "The iconic Summer Tides 2026 tee. 100% cotton, relaxed fit. Made for the beach, made for the crowd.",
     price: 2500,
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     images: [
@@ -34,7 +36,8 @@ products = [
   },
   %{
     name: "Summer Tides Wave Tee",
-    description: "Limited edition wave-print tee. Ultra-soft fabric with a bold graphic on the back. Festival energy all year round.",
+    description:
+      "Limited edition wave-print tee. Ultra-soft fabric with a bold graphic on the back. Festival energy all year round.",
     price: 2500,
     sizes: ["S", "M", "L", "XL", "XXL"],
     images: [
@@ -48,7 +51,8 @@ products = [
   },
   %{
     name: "Summer Tides Hoodie",
-    description: "Premium heavyweight hoodie. Oversized fit, kangaroo pocket, embroidered Summer Tides logo. Perfect for those cool Malindi nights.",
+    description:
+      "Premium heavyweight hoodie. Oversized fit, kangaroo pocket, embroidered Summer Tides logo. Perfect for those cool Malindi nights.",
     price: 4500,
     sizes: ["S", "M", "L", "XL", "XXL"],
     images: [
@@ -62,7 +66,8 @@ products = [
   },
   %{
     name: "Summer Love Bucket Hat",
-    description: "Sun protection meets festival fashion. Reversible bucket hat with embroidered logo. One size fits all.",
+    description:
+      "Sun protection meets festival fashion. Reversible bucket hat with embroidered logo. One size fits all.",
     price: 1800,
     sizes: ["One Size"],
     images: [
@@ -76,7 +81,8 @@ products = [
   },
   %{
     name: "Summer Tides Cap",
-    description: "Structured 6-panel cap with curved brim. Adjustable strap. Embroidered Summer Tides logo on front.",
+    description:
+      "Structured 6-panel cap with curved brim. Adjustable strap. Embroidered Summer Tides logo on front.",
     price: 1500,
     sizes: ["One Size"],
     images: [
@@ -90,7 +96,8 @@ products = [
   },
   %{
     name: "Festival Beach Towel",
-    description: "XL microfibre beach towel with full Summer Tides 2026 graphic. Sand-resistant, quick-dry. Your festival essential.",
+    description:
+      "XL microfibre beach towel with full Summer Tides 2026 graphic. Sand-resistant, quick-dry. Your festival essential.",
     price: 2200,
     sizes: ["One Size"],
     images: [
@@ -104,7 +111,8 @@ products = [
   },
   %{
     name: "Summer Tides Tote Bag",
-    description: "Heavy-duty canvas tote. Carry your festival gear in style. Printed Summer Tides artwork on natural canvas.",
+    description:
+      "Heavy-duty canvas tote. Carry your festival gear in style. Printed Summer Tides artwork on natural canvas.",
     price: 1200,
     sizes: ["One Size"],
     images: [
@@ -118,7 +126,8 @@ products = [
   },
   %{
     name: "Summer Love Shorts",
-    description: "Festival boardshorts in a lightweight, quick-dry fabric. All-over Summer Tides print. Made for the beach.",
+    description:
+      "Festival boardshorts in a lightweight, quick-dry fabric. All-over Summer Tides print. Made for the beach.",
     price: 3000,
     sizes: ["S", "M", "L", "XL", "XXL"],
     images: [
@@ -137,6 +146,7 @@ Enum.each(products, fn attrs ->
     nil ->
       {:ok, _} = Shop.create_product(attrs)
       IO.puts("✓ Created: #{attrs.name}")
+
     existing ->
       {:ok, _} = Shop.update_product(existing, attrs)
       IO.puts("↺ Updated: #{attrs.name}")
