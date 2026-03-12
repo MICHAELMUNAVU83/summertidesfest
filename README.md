@@ -1,5 +1,9 @@
 # 🌊 Summer Tides Festival — Official Website
 
+
+<img width="1440" height="900" alt="Screenshot 2026-03-12 at 10 46 14" src="https://github.com/user-attachments/assets/606741c2-27d8-4e46-bb45-1241bc1e5b55" />
+
+
 The official website for **Summer Tides: Summer Love 2026** — Kenya's premier coastal beach festival, produced by [Airbeat Global](https://www.instagram.com/summertides.fest).
 
 **July 2–4, 2026 · Lost Beach Club, Malindi, Kenya**
