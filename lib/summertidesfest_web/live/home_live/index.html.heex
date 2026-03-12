@@ -606,22 +606,24 @@
 
   <div class="py-12 w-[90%] md:w-[85%] mx-auto">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 md:gap-6 mb-10">
-      <%!-- Tier 2 Weekend Pass --%>
-      <div class="ticket-card border border-white/15 hover:border-[#E8C87A]/60 p-8 flex flex-col gap-4">
-        <p class="text-[#E8C87A] text-xs uppercase tracking-widest mon font-semibold">
-          Tier 2 — Now Live
+
+      <%!-- Tier 2 — available, highlighted --%>
+      <div class="ticket-card border-2 border-[#E8C87A] bg-[#5C2D0A]/20 p-8 flex flex-col gap-4 relative">
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#5C2D0A] text-[#E8C87A] text-xs uppercase tracking-widest px-5 py-1 mon font-bold whitespace-nowrap">
+          Now Live
+        </div>
+        <p class="text-[#E8C87A] text-xs uppercase tracking-widest mon font-semibold mt-2">
+          Current Tier
         </p>
-        <h3 class="text-white font-bold text-2xl bangers tracking-wider uppercase">
-          Weekend Pass
-        </h3>
+        <h3 class="text-white font-bold text-2xl bangers tracking-wider uppercase">Tier 2</h3>
         <div class="flex items-end gap-1">
-          <p class="text-white text-4xl font-bold bangers tracking-wider">KSH 5,000</p>
+          <p class="text-[#E8C87A] text-4xl font-bold bangers tracking-wider">KES 5,000</p>
         </div>
         <p class="text-white/40 mon text-xs -mt-2">
-          *Ticket grants access to the festival for all days
+          Admits you to 3 days of the festival
         </p>
-        <div class="h-[1px] bg-white/10 my-1"></div>
-        <ul class="flex flex-col gap-2 text-white/60 mon text-sm flex-1">
+        <div class="h-[1px] bg-[#E8C87A]/30 my-1"></div>
+        <ul class="flex flex-col gap-2 text-white/75 mon text-sm flex-1">
           <li class="flex items-center gap-2">
             <span class="text-[#E8C87A] font-bold">✓</span> Full 3-day festival access (July 2–4)
           </li>
@@ -642,89 +644,82 @@
           href="https://summertidesfestival.hustlesasa.shop/"
           target="_blank"
           rel="noopener noreferrer"
-          class="mt-2 w-full text-center bg-white/10 hover:bg-[#5C2D0A] hover:text-[#E8C87A] transition-all duration-300 text-white font-bold uppercase tracking-wider py-3 text-sm bangers tracking-widest"
-        >
-          Buy Now
-        </a>
-      </div>
-
-      <%!-- VIP Weekend Pass --%>
-      <div class="ticket-card border-2 border-[#E8C87A] bg-[#5C2D0A]/20 p-8 flex flex-col gap-4 relative sm:col-span-2 md:col-span-1">
-        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#5C2D0A] text-[#E8C87A] text-xs uppercase tracking-widest px-5 py-1 mon font-bold whitespace-nowrap">
-          Most Popular
-        </div>
-        <p class="text-[#E8C87A] text-xs uppercase tracking-widest mon font-semibold mt-2">
-          Tier 2 — Now Live
-        </p>
-        <h3 class="text-white font-bold text-2xl bangers tracking-wider uppercase">VIP Pass</h3>
-        <div class="flex items-end gap-1">
-          <p class="text-[#E8C87A] text-4xl font-bold bangers tracking-wider">KSH 10,000</p>
-        </div>
-        <div class="h-[1px] bg-[#E8C87A]/30 my-1"></div>
-        <ul class="flex flex-col gap-2 text-white/75 mon text-sm flex-1">
-          <li class="flex items-center gap-2">
-            <span class="text-[#E8C87A] font-bold">✓</span> Full 3-day festival access
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-[#E8C87A] font-bold">✓</span> Exclusive VIP zone & lounge
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-[#E8C87A] font-bold">✓</span> Front-stage viewing area
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-[#E8C87A] font-bold">✓</span> Dedicated VIP bar
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-[#E8C87A] font-bold">✓</span> Fast-track entry
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-[#E8C87A] font-bold">✓</span> Official Summer Tides merch
-          </li>
-        </ul>
-        <a
-          href="https://summertidesfestival.hustlesasa.shop/"
-          target="_blank"
-          rel="noopener noreferrer"
           class="mt-2 w-full text-center bg-[#5C2D0A] hover:bg-[#E8C87A] hover:text-[#5C2D0A] transition-all duration-300 text-[#E8C87A] font-bold uppercase tracking-wider py-3 text-sm bangers tracking-widest"
         >
-          Buy Now
+          Buy Now →
         </a>
       </div>
 
-      <%!-- Group Package --%>
-      <div class="ticket-card border border-white/15 hover:border-[#E8C87A]/60 p-8 flex flex-col gap-4">
-        <p class="text-[#E8C87A] text-xs uppercase tracking-widest mon font-semibold">
-          Best Value
-        </p>
-        <h3 class="text-white font-bold text-2xl bangers tracking-wider uppercase">
-          Group (10+)
-        </h3>
-        <div class="flex items-end gap-1">
-          <p class="text-white text-4xl font-bold bangers tracking-wider">KSH 4,000</p>
-          <p class="text-white/40 text-sm mon mb-2">/person</p>
+      <%!-- Pre-Sale — sold out --%>
+      <div class="ticket-card border border-white/10 p-8 flex flex-col gap-4 opacity-60 relative">
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-white/10 text-white/50 text-xs uppercase tracking-widest px-5 py-1 mon font-bold whitespace-nowrap">
+          Sold Out
         </div>
+        <p class="text-white/40 text-xs uppercase tracking-widest mon font-semibold mt-2">
+          Early Bird
+        </p>
+        <h3 class="text-white font-bold text-2xl bangers tracking-wider uppercase">Pre-Sale</h3>
+        <div class="flex items-end gap-1">
+          <p class="text-white/60 text-4xl font-bold bangers tracking-wider line-through decoration-red-400/60">KES 3,000</p>
+        </div>
+        <p class="text-white/30 mon text-xs -mt-2">
+          Admits you to 3 days of the festival
+        </p>
         <div class="h-[1px] bg-white/10 my-1"></div>
-        <ul class="flex flex-col gap-2 text-white/60 mon text-sm flex-1">
+        <ul class="flex flex-col gap-2 text-white/40 mon text-sm flex-1">
           <li class="flex items-center gap-2">
-            <span class="text-[#E8C87A] font-bold">✓</span> Full 3-day festival access
+            <span class="text-white/30 font-bold">✓</span> Full 3-day festival access (July 2–4)
           </li>
           <li class="flex items-center gap-2">
-            <span class="text-[#E8C87A] font-bold">✓</span> Both main stages
+            <span class="text-white/30 font-bold">✓</span> Both main stages
           </li>
           <li class="flex items-center gap-2">
-            <span class="text-[#E8C87A] font-bold">✓</span> Group entry coordination
+            <span class="text-white/30 font-bold">✓</span> Lost Beach Club, Malindi
           </li>
           <li class="flex items-center gap-2">
-            <span class="text-[#E8C87A] font-bold">✓</span> Minimum 10 tickets required
+            <span class="text-white/30 font-bold">✓</span> 18+ Strictly ID
           </li>
         </ul>
-        <a
-          href="mailto:summertides@gmail.com"
-          class="mt-2 w-full text-center bg-white/10 hover:bg-[#5C2D0A] hover:text-[#E8C87A] transition-all duration-300 text-white font-bold uppercase tracking-wider py-3 text-sm bangers tracking-widest"
-        >
-          Contact Us
-        </a>
+        <div class="mt-2 w-full text-center border border-white/10 text-white/30 font-bold uppercase tracking-wider py-3 text-sm bangers tracking-widest cursor-not-allowed">
+          Sold Out
+        </div>
       </div>
+
+      <%!-- Tier 1 — sold out --%>
+      <div class="ticket-card border border-white/10 p-8 flex flex-col gap-4 opacity-60 relative">
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-white/10 text-white/50 text-xs uppercase tracking-widest px-5 py-1 mon font-bold whitespace-nowrap">
+          Sold Out
+        </div>
+        <p class="text-white/40 text-xs uppercase tracking-widest mon font-semibold mt-2">
+          Tier 1
+        </p>
+        <h3 class="text-white font-bold text-2xl bangers tracking-wider uppercase">Tier 1</h3>
+        <div class="flex items-end gap-1">
+          <p class="text-white/60 text-4xl font-bold bangers tracking-wider line-through decoration-red-400/60">KES 4,000</p>
+        </div>
+        <p class="text-white/30 mon text-xs -mt-2">
+          Admits you to 3 days of the festival
+        </p>
+        <div class="h-[1px] bg-white/10 my-1"></div>
+        <ul class="flex flex-col gap-2 text-white/40 mon text-sm flex-1">
+          <li class="flex items-center gap-2">
+            <span class="text-white/30 font-bold">✓</span> Full 3-day festival access (July 2–4)
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-white/30 font-bold">✓</span> Both main stages
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-white/30 font-bold">✓</span> Lost Beach Club, Malindi
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-white/30 font-bold">✓</span> 18+ Strictly ID
+          </li>
+        </ul>
+        <div class="mt-2 w-full text-center border border-white/10 text-white/30 font-bold uppercase tracking-wider py-3 text-sm bangers tracking-widest cursor-not-allowed">
+          Sold Out
+        </div>
+      </div>
+
     </div>
 
     <p class="text-center text-white/30 mon text-xs uppercase tracking-widest">
