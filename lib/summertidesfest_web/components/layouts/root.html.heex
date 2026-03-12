@@ -4,9 +4,152 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
-    <.live_title default="Summer Tides Festival">
+
+    <%!-- ═══════════════════════════════════════════
+         PRIMARY SEO
+    ═══════════════════════════════════════════ --%>
+    <.live_title default="Summer Tides: Summer Love — July 2–4, 2026 | Lost Beach Club, Malindi">
       {assigns[:page_title]}
     </.live_title>
+
+    <meta
+      name="description"
+      content="Summer Tides: Summer Love — Kenya's biggest coastal beach festival returns July 2–4, 2026 at Lost Beach Club, Malindi. 3 days · 2 stages · Afrobeats, EDM, House, R&B, Dancehall & Gengetone. Tickets from KSH 5,000."
+    />
+    <meta
+      name="keywords"
+      content="Summer Tides, Summer Love 2026, Kenya beach festival, Malindi festival, Lost Beach Club, Afrobeats festival Kenya, EDM Kenya, coastal festival, Airbeat Global, July 2026 festival, Kenya music festival, beach party Kenya"
+    />
+    <meta name="author" content="Airbeat Global" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#5C2D0A" />
+
+    <%!-- ═══════════════════════════════════════════
+         CANONICAL
+    ═══════════════════════════════════════════ --%>
+    <link rel="canonical" href="https://summertidesfest.com/" />
+
+    <%!-- ═══════════════════════════════════════════
+         OPEN GRAPH (Facebook / WhatsApp / LinkedIn)
+    ═══════════════════════════════════════════ --%>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://summertidesfest.com/" />
+    <meta property="og:site_name" content="Summer Tides Festival" />
+    <meta property="og:title" content="Summer Tides: Summer Love — July 2–4, 2026 | Malindi, Kenya" />
+    <meta
+      property="og:description"
+      content="Kenya's premier beach festival is back! 3 days of Afrobeats, EDM, House, R&B, Dancehall & Gengetone at Lost Beach Club, Malindi. Tickets from KSH 5,000."
+    />
+    <meta property="og:image" content="https://summertidesfest.com/images/pic.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Summer Tides: Summer Love 2026 — Lost Beach Club, Malindi" />
+    <meta property="og:locale" content="en_KE" />
+
+    <%!-- ═══════════════════════════════════════════
+         TWITTER / X CARD
+    ═══════════════════════════════════════════ --%>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@summertidesfest" />
+    <meta name="twitter:creator" content="@summertidesfest" />
+    <meta name="twitter:title" content="Summer Tides: Summer Love — July 2–4, 2026 | Malindi" />
+    <meta
+      name="twitter:description"
+      content="Kenya's biggest coastal beach festival. 3 days · 2 stages · Afrobeats, EDM, House, R&B & more. Lost Beach Club, Malindi. Tickets from KSH 5,000."
+    />
+    <meta name="twitter:image" content="https://summertidesfest.com/images/pic.jpg" />
+    <meta name="twitter:image:alt" content="Summer Tides: Summer Love 2026 — Lost Beach Club, Malindi" />
+
+    <%!-- ═══════════════════════════════════════════
+         JSON-LD STRUCTURED DATA — Event Schema
+    ═══════════════════════════════════════════ --%>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "MusicEvent",
+        "name": "Summer Tides: Summer Love 2026",
+        "description": "Kenya's premier coastal beach festival returns for 3 days of world-class music, beach activities, and unforgettable experiences at Lost Beach Club, Malindi. Featuring Afrobeats, EDM, House, R&B, Dancehall and Gengetone across 2 stages.",
+        "url": "https://summertidesfest.com/",
+        "image": "https://summertidesfest.com/images/pic.jpg",
+        "startDate": "2026-07-02",
+        "endDate": "2026-07-04",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "location": {
+          "@type": "Place",
+          "name": "Lost Beach Club",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Lost Beach Club",
+            "addressLocality": "Malindi",
+            "addressRegion": "Kilifi County",
+            "addressCountry": "KE"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": -3.2175,
+            "longitude": 40.1167
+          }
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": "Airbeat Global",
+          "url": "https://summertidesfest.com/"
+        },
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Weekend Pass",
+            "price": "5000",
+            "priceCurrency": "KES",
+            "availability": "https://schema.org/InStock",
+            "url": "https://summertidesfestival.hustlesasa.shop/",
+            "validFrom": "2026-01-01"
+          },
+          {
+            "@type": "Offer",
+            "name": "VIP Pass",
+            "price": "10000",
+            "priceCurrency": "KES",
+            "availability": "https://schema.org/InStock",
+            "url": "https://summertidesfestival.hustlesasa.shop/",
+            "validFrom": "2026-01-01"
+          }
+        ],
+        "performer": [
+          {"@type": "Person", "name": "DJ Grauchi"},
+          {"@type": "Person", "name": "Joe Mfalme"},
+          {"@type": "Person", "name": "Etana"},
+          {"@type": "Person", "name": "Sir M"},
+          {"@type": "Person", "name": "G Money"},
+          {"@type": "Person", "name": "Malonza"},
+          {"@type": "Person", "name": "Kaneda"},
+          {"@type": "Person", "name": "KU5"},
+          {"@type": "Person", "name": "Suraj"},
+          {"@type": "Person", "name": "Junior Petes"}
+        ],
+        "genre": ["Afrobeats", "EDM", "House", "R&B", "Dancehall", "Gengetone"],
+        "typicalAgeRange": "18-",
+        "isAccessibleForFree": false,
+        "maximumAttendeeCapacity": 5000
+      }
+    </script>
+
+    <%!-- ═══════════════════════════════════════════
+         FAVICON & TOUCH ICONS
+    ═══════════════════════════════════════════ --%>
+    <link rel="icon" type="image/png" href="/images/summertides.png" />
+    <link rel="apple-touch-icon" href="/images/summertides.png" />
+
+    <%!-- ═══════════════════════════════════════════
+         PERFORMANCE — font preconnect
+    ═══════════════════════════════════════════ --%>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <%!-- ═══════════════════════════════════════════
+         ASSETS
+    ═══════════════════════════════════════════ --%>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
