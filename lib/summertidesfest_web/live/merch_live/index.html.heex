@@ -1,3 +1,6 @@
+<%!-- MerchCart hook attaches to entire page --%>
+<div id="merch-page" phx-hook="MerchCart">
+
 <%!-- ===================== NAVBAR ===================== --%>
 <nav id="merch-nav" class="fixed top-0 left-0 right-0 z-50 bg-[#0D0800]/95 backdrop-blur-md border-b border-[#E8C87A]/20">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
@@ -68,10 +71,9 @@
     <% else %>
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
         <%= for product <- @filtered_products do %>
-          <div
-            class="group bg-[#1A0F00] rounded-2xl overflow-hidden border border-[#E8C87A]/10 hover:border-[#E8C87A]/40 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-            phx-click="open_product"
-            phx-value-id={product.id}
+          <.link
+            navigate={"/merch/#{product.id}"}
+            class="group bg-[#1A0F00] rounded-2xl overflow-hidden border border-[#E8C87A]/10 hover:border-[#E8C87A]/40 transition-all duration-300 hover:-translate-y-1 cursor-pointer block"
           >
             <%!-- Product image --%>
             <div class="relative aspect-square overflow-hidden bg-[#261500]">
@@ -110,7 +112,7 @@
                 <p class="text-white/40 text-xs mt-1"><%= Enum.join(product.sizes, " · ") %></p>
               <% end %>
             </div>
-          </div>
+          </.link>
         <% end %>
       </div>
     <% end %>
@@ -351,8 +353,18 @@
             <p class="text-white/50 text-xs leading-relaxed">Your order will be processed and our team will reach out to confirm payment and delivery details via email or phone.</p>
           </div>
 
-          <button type="submit" class="w-full bg-[#E8C87A] text-[#0D0800] font-black py-4 rounded-xl text-base hover:bg-[#C9A04E] transition-colors uppercase tracking-wider mt-2">
-            Place Order — KSH <%= cart_total(@cart)  %>
+          <button type="submit" disabled={@loading} class="w-full bg-[#E8C87A] text-[#0D0800] font-black py-4 rounded-xl text-base hover:bg-[#C9A04E] transition-colors uppercase tracking-wider mt-2 disabled:opacity-60">
+            <%= if @loading do %>
+              <span class="flex items-center justify-center gap-2">
+                <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                </svg>
+                Redirecting to payment…
+              </span>
+            <% else %>
+              Pay with Paystack — <%= format_price(cart_total(@cart)) %>
+            <% end %>
           </button>
         </form>
       </div>
@@ -387,3 +399,5 @@
 <footer class="bg-[#0D0800] border-t border-[#E8C87A]/20 py-8 mt-16 text-center">
   <p class="text-white/30 text-sm">© 2026 Summer Tides. All rights reserved. · <a href="/" class="text-[#E8C87A]/50 hover:text-[#E8C87A] transition-colors">Back to Festival Site</a></p>
 </footer>
+
+</div><%!-- /merch-page hook wrapper --%>

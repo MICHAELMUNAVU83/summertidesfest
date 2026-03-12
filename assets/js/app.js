@@ -2,6 +2,7 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
+import Chart from "chart.js/auto"
 
 // Navbar scroll hook
 let NavBar = {
@@ -116,11 +117,157 @@ let Gallery = {
   destroyed() {}
 }
 
+// Cart — home page merch section
+let Cart = {
+  mounted() {
+    try {
+      const saved = localStorage.getItem("st_cart")
+      if (saved) {
+        const items = JSON.parse(saved)
+        if (Array.isArray(items) && items.length > 0) {
+          this.pushEvent("restore_cart", { cart: items })
+        }
+      }
+    } catch (e) {}
+
+    this.handleEvent("save_cart", ({ cart }) => {
+      try { localStorage.setItem("st_cart", JSON.stringify(cart)) } catch (e) {}
+    })
+  }
+}
+
+// Admin charts via Chart.js
+let AdminCharts = {
+  mounted() {
+    this.charts = {}
+
+    this.handleEvent("render_charts", ({ revenue, statuses }) => {
+      this.renderRevenueChart(revenue)
+      this.renderStatusChart(statuses)
+    })
+  },
+
+  renderRevenueChart(data) {
+    const el = document.getElementById("revenue-chart")
+    if (!el) return
+    if (this.charts.revenue) this.charts.revenue.destroy()
+
+    this.charts.revenue = new Chart(el, {
+      type: "line",
+      data: {
+        labels: data.map(d => d.label),
+        datasets: [{
+          label: "Revenue (KSH)",
+          data: data.map(d => d.value),
+          borderColor: "#5C2D0A",
+          backgroundColor: "rgba(92,45,10,0.08)",
+          borderWidth: 2.5,
+          pointBackgroundColor: "#5C2D0A",
+          pointRadius: 4,
+          tension: 0.4,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: { color: "rgba(0,0,0,0.04)" },
+            ticks: { color: "#78716c", font: { size: 11 } }
+          },
+          x: {
+            grid: { display: false },
+            ticks: { color: "#78716c", font: { size: 11 } }
+          }
+        }
+      }
+    })
+  },
+
+  renderStatusChart(data) {
+    const el = document.getElementById("status-chart")
+    if (!el) return
+    if (this.charts.status) this.charts.status.destroy()
+
+    const colors = {
+      pending:    "#f59e0b",
+      processing: "#3b82f6",
+      shipped:    "#8b5cf6",
+      delivered:  "#10b981",
+      cancelled:  "#ef4444"
+    }
+
+    this.charts.status = new Chart(el, {
+      type: "doughnut",
+      data: {
+        labels: data.map(d => d.label),
+        datasets: [{
+          data: data.map(d => d.value),
+          backgroundColor: data.map(d => colors[d.label] || "#a8a29e"),
+          borderWidth: 0,
+          hoverOffset: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "72%",
+        plugins: {
+          legend: {
+            position: "bottom",
+            labels: { color: "#78716c", font: { size: 11 }, padding: 14, boxWidth: 10 }
+          }
+        }
+      }
+    })
+  },
+
+  destroyed() {
+    Object.values(this.charts).forEach(c => c.destroy())
+  }
+}
+
+// MerchCart — shared cart across /merch and /merch/:id pages
+const MERCH_CART_KEY = "st_merch_cart"
+
+let MerchCart = {
+  mounted() {
+    // Restore cart from localStorage on page load
+    try {
+      const saved = localStorage.getItem(MERCH_CART_KEY)
+      if (saved) {
+        const items = JSON.parse(saved)
+        if (Array.isArray(items) && items.length > 0) {
+          this.pushEvent("restore_cart", { cart: items })
+        }
+      }
+    } catch (e) {}
+
+    // Save cart whenever LiveView updates it
+    this.handleEvent("save_merch_cart", ({ cart }) => {
+      try { localStorage.setItem(MERCH_CART_KEY, JSON.stringify(cart)) } catch (e) {}
+    })
+
+    // Clear cart on successful order
+    this.handleEvent("clear_merch_cart", () => {
+      try { localStorage.removeItem(MERCH_CART_KEY) } catch (e) {}
+    })
+
+    // Redirect to Paystack (more reliable than LiveView external redirect)
+    this.handleEvent("redirect_to", ({ url }) => {
+      window.location.href = url
+    })
+  }
+}
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken},
-  hooks: { NavBar, MobileNav, CloseMobileNav, HeroSlider, CountDown, Gallery }
+  hooks: { NavBar, MobileNav, CloseMobileNav, HeroSlider, CountDown, Gallery, Cart, MerchCart, AdminCharts }
 })
 
 topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})

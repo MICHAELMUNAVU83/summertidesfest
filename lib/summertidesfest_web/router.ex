@@ -23,6 +23,10 @@ defmodule SummertidesfestWeb.Router do
     live "/", HomeLive.Index, :index
     live "/faqs", FaqsLive.Index, :index
     live "/merch", MerchLive.Index, :index
+    live "/merch/:id", MerchLive.Show, :show
+
+    get "/payment/callback", PaymentController, :callback
+    get "/payment/success", PaymentController, :success
   end
 
   scope "/admin", SummertidesfestWeb do
@@ -31,6 +35,7 @@ defmodule SummertidesfestWeb.Router do
     live_session :admin,
       root_layout: {SummertidesfestWeb.Layouts, :admin_root},
       on_mount: [{SummertidesfestWeb.UserAuth, :ensure_authenticated}] do
+      live "/dashboard", Admin.DashboardLive.Index, :index
       live "/orders", Admin.OrdersLive.Index, :index
       live "/products", Admin.ProductsLive.Index, :index
     end

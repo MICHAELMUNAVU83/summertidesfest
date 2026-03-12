@@ -1,0 +1,385 @@
+<%!-- MerchCart hook wrapper for localStorage sync --%>
+<div id="merch-show-page" phx-hook="MerchCart" class="min-h-screen bg-[#0D0800]">
+
+  <%!-- ===================== NAVBAR ===================== --%>
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-[#0D0800]/95 backdrop-blur-md border-b border-[#E8C87A]/20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <.link navigate="/" class="flex items-center gap-2">
+          <img src="/images/summertides.png" alt="Summer Tides" class="h-9 w-auto" />
+        </.link>
+      </div>
+
+      <button
+        phx-click="toggle_cart"
+        class="relative flex items-center gap-2 bg-[#E8C87A] text-[#0D0800] font-bold px-4 py-2 rounded-full text-sm hover:bg-[#C9A04E] transition-colors"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+        </svg>
+        Cart
+        <%= if cart_count(@cart) > 0 do %>
+          <span class="absolute -top-2 -right-2 bg-[#5C2D0A] text-[#E8C87A] text-xs font-black rounded-full w-5 h-5 flex items-center justify-center">
+            <%= cart_count(@cart) %>
+          </span>
+        <% end %>
+      </button>
+    </div>
+  </nav>
+
+  <%!-- ===================== PRODUCT ===================== --%>
+  <main class="pt-24 md:pt-28 max-w-6xl mx-auto px-4 sm:px-6 pb-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
+
+      <%!-- Left: Images --%>
+      <div class="md:sticky md:top-24">
+        <div class="aspect-square bg-[#1A0F00] rounded-2xl overflow-hidden">
+          <%= if length(@product.images) > 0 do %>
+            <img
+              src={Enum.at(@product.images, @selected_image)}
+              alt={@product.name}
+              class="w-full h-full object-cover"
+            />
+          <% else %>
+            <div class="w-full h-full flex items-center justify-center text-[#E8C87A]/20">
+              <svg class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+            </div>
+          <% end %>
+        </div>
+
+        <%= if length(@product.images) > 1 do %>
+          <div class="flex gap-2 mt-3 overflow-x-auto pb-1">
+            <%= for {img, idx} <- Enum.with_index(@product.images) do %>
+              <button
+                phx-click="select_image"
+                phx-value-index={idx}
+                class={[
+                  "w-16 h-16 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0",
+                  if(@selected_image == idx,
+                    do: "border-[#E8C87A]",
+                    else: "border-transparent opacity-60 hover:opacity-100"
+                  )
+                ]}
+              >
+                <img src={img} class="w-full h-full object-cover" />
+              </button>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <%!-- Right: Details --%>
+      <div class="flex flex-col">
+        <span class="text-xs font-bold uppercase tracking-widest text-[#E8C87A]/50 mb-2">
+          <%= @product.category %>
+        </span>
+        <h1 class="text-3xl md:text-4xl font-black text-white leading-tight"><%= @product.name %></h1>
+        <p class="text-2xl font-bold text-[#E8C87A] mt-3"><%= format_price(@product.price) %></p>
+
+        <%= if @product.description && @product.description != "" do %>
+          <p class="text-white/50 text-sm leading-relaxed mt-4 border-t border-white/10 pt-4">
+            <%= @product.description %>
+          </p>
+        <% end %>
+
+        <div class="mt-6 space-y-5">
+          <%!-- Size selector --%>
+          <%= if length(@product.sizes) > 0 do %>
+            <div>
+              <p class="text-xs font-bold uppercase tracking-widest text-white/40 mb-3">
+                Size — <span class="text-white"><%= @selected_size %></span>
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <%= for size <- @product.sizes do %>
+                  <button
+                    phx-click="select_size"
+                    phx-value-size={size}
+                    class={[
+                      "px-4 py-2 rounded-lg border text-sm font-bold transition-all",
+                      if(@selected_size == size,
+                        do: "bg-[#E8C87A] border-[#E8C87A] text-[#0D0800]",
+                        else: "border-[#E8C87A]/30 text-[#E8C87A]/60 hover:border-[#E8C87A]/70 hover:text-[#E8C87A]"
+                      )
+                    ]}
+                  >
+                    <%= size %>
+                  </button>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+          <%!-- Quantity --%>
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-white/40 mb-3">Quantity</p>
+            <div class="inline-flex items-center gap-0 border border-[#E8C87A]/30 rounded-xl overflow-hidden">
+              <button
+                phx-click="set_qty"
+                phx-value-delta="-1"
+                class="w-11 h-11 flex items-center justify-center text-[#E8C87A] font-bold text-lg hover:bg-[#E8C87A]/10 transition-colors"
+              >−</button>
+              <span class="w-12 text-center text-white font-black text-lg border-x border-[#E8C87A]/30 h-11 flex items-center justify-center">
+                <%= @qty %>
+              </span>
+              <button
+                phx-click="set_qty"
+                phx-value-delta="1"
+                class="w-11 h-11 flex items-center justify-center text-[#E8C87A] font-bold text-lg hover:bg-[#E8C87A]/10 transition-colors"
+              >+</button>
+            </div>
+          </div>
+
+          <%!-- Add to cart / Sold out --%>
+          <%= if @product.in_stock do %>
+            <button
+              phx-click="add_to_cart"
+              class="w-full py-4 bg-[#E8C87A] text-[#0D0800] font-black text-base uppercase tracking-widest rounded-xl hover:bg-[#C9A04E] active:scale-[0.98] transition-all"
+            >
+              Add to Cart — <%= format_price(@product.price * @qty) %>
+            </button>
+          <% else %>
+            <div class="w-full py-4 bg-[#1A0F00] border border-[#E8C87A]/20 rounded-xl text-center">
+              <p class="text-[#E8C87A]/40 font-bold uppercase tracking-widest text-sm">Sold Out</p>
+            </div>
+          <% end %>
+
+          <%!-- Already in cart notice --%>
+          <%= if Map.has_key?(@cart, "#{@product.id}:#{@selected_size}") do %>
+            <p class="text-[#E8C87A]/60 text-xs text-center -mt-2">
+              ✓ Already in cart ·
+              <button phx-click="toggle_cart" class="underline underline-offset-2 hover:text-[#E8C87A]">View cart</button>
+            </p>
+          <% end %>
+
+          <p class="text-white/20 text-xs text-center pt-1">
+            Secure payment via Paystack · Visa · Mastercard · MPESA
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <%!-- ===================== CART DRAWER ===================== --%>
+  <div class={[
+    "fixed inset-y-0 right-0 z-50 w-full sm:w-[420px] bg-[#111] border-l border-[#E8C87A]/20 flex flex-col transform transition-transform duration-300 ease-in-out",
+    if(@cart_open, do: "translate-x-0", else: "translate-x-full")
+  ]}>
+    <%!-- Header --%>
+    <div class="flex items-center justify-between px-5 py-4 border-b border-[#E8C87A]/20">
+      <div>
+        <h2 class="text-white font-black text-lg">Your Cart</h2>
+        <%= if cart_count(@cart) > 0 do %>
+          <p class="text-[#E8C87A]/50 text-xs mt-0.5"><%= cart_count(@cart) %> item(s)</p>
+        <% end %>
+      </div>
+      <button phx-click="close_cart" class="w-8 h-8 rounded-full bg-white/10 text-white/60 hover:text-white flex items-center justify-center transition-colors text-xl">×</button>
+    </div>
+
+    <%!-- Items --%>
+    <div class="flex-1 overflow-y-auto px-5 py-4">
+      <%= if map_size(@cart) == 0 do %>
+        <div class="flex flex-col items-center justify-center h-full gap-3 text-center py-20">
+          <svg class="w-12 h-12 text-white/10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+          </svg>
+          <p class="text-white/30 font-bold text-sm">Your cart is empty</p>
+          <button phx-click="close_cart" class="text-[#E8C87A]/50 text-xs underline underline-offset-2 hover:text-[#E8C87A] transition-colors">
+            Continue shopping
+          </button>
+        </div>
+      <% else %>
+        <div class="flex flex-col gap-3">
+          <%= for {key, item} <- @cart do %>
+            <div class="flex gap-3 bg-[#1A0F00] rounded-xl p-3 border border-white/5">
+              <div class="w-16 h-16 rounded-lg bg-[#261500] overflow-hidden flex-shrink-0">
+                <%= if length(item.product.images) > 0 do %>
+                  <img src={hd(item.product.images)} alt={item.product.name} class="w-full h-full object-cover" />
+                <% else %>
+                  <div class="w-full h-full flex items-center justify-center text-white/20 text-xl">👕</div>
+                <% end %>
+              </div>
+
+              <div class="flex-1 min-w-0">
+                <p class="text-white font-bold text-sm truncate"><%= item.product.name %></p>
+                <p class="text-[#E8C87A]/50 text-xs mt-0.5">
+                  <%= if item.size && item.size != "One Size", do: "Size #{item.size}", else: "One Size" %>
+                </p>
+                <p class="text-[#E8C87A] font-bold text-sm mt-1">
+                  <%= format_price(item.product.price * item.qty) %>
+                </p>
+              </div>
+
+              <div class="flex flex-col items-end justify-between">
+                <button phx-click="remove_from_cart" phx-value-key={key} class="text-white/20 hover:text-red-400 transition-colors text-sm w-6 h-6 flex items-center justify-center rounded hover:bg-red-900/20">✕</button>
+                <div class="flex items-center gap-1 bg-[#261500] rounded-lg overflow-hidden border border-white/5">
+                  <button phx-click="update_qty" phx-value-key={key} phx-value-delta="-1"
+                    class="w-7 h-7 text-[#E8C87A]/60 hover:text-[#E8C87A] font-bold text-base flex items-center justify-center hover:bg-white/5 transition-colors">−</button>
+                  <span class="text-white font-bold text-sm w-5 text-center"><%= item.qty %></span>
+                  <button phx-click="update_qty" phx-value-key={key} phx-value-delta="1"
+                    class="w-7 h-7 text-[#E8C87A]/60 hover:text-[#E8C87A] font-bold text-base flex items-center justify-center hover:bg-white/5 transition-colors">+</button>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <%!-- Footer --%>
+    <%= if map_size(@cart) > 0 do %>
+      <div class="border-t border-[#E8C87A]/20 px-5 py-4 flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <span class="text-white/50 text-sm">Subtotal</span>
+          <span class="text-[#E8C87A] font-black text-xl"><%= format_price(cart_total(@cart)) %></span>
+        </div>
+        <button
+          phx-click="open_checkout"
+          class="w-full bg-[#E8C87A] text-[#0D0800] font-black py-3.5 rounded-xl uppercase tracking-widest text-sm hover:bg-[#C9A04E] transition-colors"
+        >
+          Checkout →
+        </button>
+      </div>
+    <% end %>
+  </div>
+
+  <%!-- Cart backdrop --%>
+  <%= if @cart_open do %>
+    <div phx-click="close_cart" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"></div>
+  <% end %>
+
+  <%!-- ===================== CHECKOUT MODAL ===================== --%>
+  <%= if @checkout_open do %>
+    <div class="fixed inset-0 z-60 flex items-end sm:items-center justify-center p-0 sm:p-6">
+      <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" phx-click="close_checkout"></div>
+
+      <div class="relative z-10 bg-white w-full sm:max-w-md sm:rounded-2xl shadow-2xl max-h-[96vh] overflow-y-auto">
+        <%!-- Header --%>
+        <div class="flex items-center justify-between px-6 pt-6 pb-4 border-b border-stone-100">
+          <div>
+            <h2 class="text-stone-900 font-black text-xl">Checkout</h2>
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <svg class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
+              <p class="text-stone-400 text-xs">Secured by Paystack</p>
+            </div>
+          </div>
+          <button phx-click="close_checkout" class="w-8 h-8 rounded-full bg-stone-100 text-stone-400 hover:text-stone-700 hover:bg-stone-200 flex items-center justify-center text-lg transition-colors">×</button>
+        </div>
+
+        <div class="px-6 py-5 flex flex-col gap-5">
+          <%!-- Order summary --%>
+          <div class="bg-stone-50 rounded-xl p-4 border border-stone-200">
+            <p class="text-stone-400 text-[10px] font-bold uppercase tracking-widest mb-3">Order Summary</p>
+            <%= for {_key, item} <- @cart do %>
+              <div class="flex justify-between items-start py-2.5 border-b border-stone-100 last:border-0">
+                <div class="flex items-center gap-3">
+                  <%= if length(item.product.images) > 0 do %>
+                    <div class="w-10 h-10 rounded-lg overflow-hidden bg-stone-200 flex-shrink-0">
+                      <img src={hd(item.product.images)} class="w-full h-full object-cover" />
+                    </div>
+                  <% end %>
+                  <div>
+                    <p class="text-stone-800 text-sm font-semibold"><%= item.product.name %></p>
+                    <p class="text-stone-400 text-xs mt-0.5">
+                      <%= if item.size && item.size != "One Size", do: "#{item.size} · ", else: "" %>Qty <%= item.qty %>
+                    </p>
+                  </div>
+                </div>
+                <p class="text-stone-800 font-bold text-sm ml-2"><%= format_price(item.product.price * item.qty) %></p>
+              </div>
+            <% end %>
+            <div class="flex justify-between items-center pt-3">
+              <span class="text-stone-600 font-semibold text-sm">Total</span>
+              <span class="text-[#5C2D0A] font-black text-lg"><%= format_price(cart_total(@cart)) %></span>
+            </div>
+          </div>
+
+          <%!-- Contact form --%>
+          <form phx-submit="submit_order" class="flex flex-col gap-3">
+            <div>
+              <label class="text-stone-500 text-xs font-semibold block mb-1">Full name *</label>
+              <input
+                type="text"
+                name="customer_name"
+                value={@checkout_form["customer_name"]}
+                phx-change="update_checkout_field"
+                placeholder="Your full name"
+                autocomplete="name"
+                class={[
+                  "w-full border rounded-xl px-4 py-3 text-sm text-stone-900 placeholder-stone-300 outline-none transition-colors",
+                  if(@checkout_errors["customer_name"], do: "border-red-400 bg-red-50", else: "border-stone-200 focus:border-[#5C2D0A]")
+                ]}
+              />
+              <%= if err = @checkout_errors["customer_name"] do %>
+                <p class="text-red-500 text-xs mt-1"><%= err %></p>
+              <% end %>
+            </div>
+
+            <div>
+              <label class="text-stone-500 text-xs font-semibold block mb-1">Email address *</label>
+              <input
+                type="email"
+                name="customer_email"
+                value={@checkout_form["customer_email"]}
+                phx-change="update_checkout_field"
+                placeholder="you@example.com"
+                autocomplete="email"
+                class={[
+                  "w-full border rounded-xl px-4 py-3 text-sm text-stone-900 placeholder-stone-300 outline-none transition-colors",
+                  if(@checkout_errors["customer_email"], do: "border-red-400 bg-red-50", else: "border-stone-200 focus:border-[#5C2D0A]")
+                ]}
+              />
+              <%= if err = @checkout_errors["customer_email"] do %>
+                <p class="text-red-500 text-xs mt-1"><%= err %></p>
+              <% end %>
+            </div>
+
+            <div>
+              <label class="text-stone-500 text-xs font-semibold block mb-1">Phone <span class="text-stone-300">(optional)</span></label>
+              <input
+                type="tel"
+                name="customer_phone"
+                value={@checkout_form["customer_phone"]}
+                phx-change="update_checkout_field"
+                placeholder="+254 7xx xxx xxx"
+                autocomplete="tel"
+                class="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm text-stone-900 placeholder-stone-300 outline-none focus:border-[#5C2D0A] transition-colors"
+              />
+            </div>
+
+            <%= if err = @checkout_errors[:general] do %>
+              <p class="text-red-600 text-sm bg-red-50 border border-red-200 rounded-xl px-4 py-3"><%= err %></p>
+            <% end %>
+
+            <button
+              type="submit"
+              disabled={@loading}
+              class="w-full mt-2 bg-[#5C2D0A] text-[#E8C87A] font-black py-4 rounded-xl uppercase tracking-widest text-sm hover:bg-[#7a3b0d] transition-colors disabled:opacity-60 active:scale-[0.98]"
+            >
+              <%= if @loading do %>
+                <span class="flex items-center justify-center gap-2">
+                  <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                  </svg>
+                  Redirecting to Paystack…
+                </span>
+              <% else %>
+                Pay <%= format_price(cart_total(@cart)) %> →
+              <% end %>
+            </button>
+
+            <p class="text-center text-stone-300 text-xs pb-1">
+              Visa · Mastercard · MPESA · Paystack
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+</div><%!-- /merch-show-page --%>

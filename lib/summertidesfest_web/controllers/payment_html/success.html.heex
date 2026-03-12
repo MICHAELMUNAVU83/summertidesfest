@@ -1,0 +1,40 @@
+<div class="min-h-screen bg-[#FAF7F2] flex items-center justify-center px-4">
+  <div class="max-w-md w-full text-center">
+
+    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+      <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+      </svg>
+    </div>
+
+    <h1 class="text-3xl font-black text-stone-900 mb-2">Order Confirmed!</h1>
+    <p class="text-stone-500 mb-1">Thank you, <strong class="text-stone-700"><%= @order.customer_name %></strong>.</p>
+    <p class="text-stone-400 text-sm mb-6">
+      A confirmation will be sent to <span class="text-stone-600"><%= @order.customer_email %></span>.
+    </p>
+
+    <div class="bg-white border border-stone-200 rounded-2xl p-5 text-left mb-6">
+      <p class="text-xs font-bold uppercase tracking-widest text-stone-400 mb-3">Order Summary</p>
+      <div class="text-xs text-stone-400 font-mono mb-3">Ref: <%= @order.reference %></div>
+
+      <%= for item <- @order.order_items do %>
+        <div class="flex justify-between items-center py-2 border-b border-stone-100 last:border-0">
+          <div>
+            <p class="text-sm font-semibold text-stone-800"><%= item.product_name %></p>
+            <p class="text-xs text-stone-400">Size: <%= item.size %> · Qty: <%= item.quantity %></p>
+          </div>
+          <p class="text-sm font-bold text-stone-800">KSH <%= item.unit_price * item.quantity %></p>
+        </div>
+      <% end %>
+
+      <div class="flex justify-between items-center pt-3 mt-1">
+        <span class="text-sm font-bold text-stone-700">Total</span>
+        <span class="text-base font-black text-[#5C2D0A]">KSH <%= @order.total %></span>
+      </div>
+    </div>
+
+    <a href="/" class="inline-block bg-[#5C2D0A] text-[#E8C87A] font-black uppercase tracking-widest px-8 py-3.5 rounded-xl hover:bg-[#7a3b0d] transition-colors text-sm">
+      Back to Summer Tides
+    </a>
+  </div>
+</div>

@@ -70,6 +70,13 @@ defmodule Summertidesfest.Shop do
     end)
   end
 
+  def get_order_by_reference(reference) do
+    case Repo.get_by(Order, reference: reference) do
+      nil -> {:error, :not_found}
+      order -> {:ok, Repo.preload(order, order_items: :product)}
+    end
+  end
+
   def update_order_status(%Order{} = order, status) do
     order
     |> Order.changeset(%{status: status})
@@ -77,10 +84,32 @@ defmodule Summertidesfest.Shop do
   end
 
   def orders_summary do
-    total = Repo.aggregate(Order, :count, :id)
-    pending = Repo.aggregate(from(o in Order, where: o.status == "pending"), :count, :id)
-    revenue = Repo.aggregate(from(o in Order, where: o.status != "cancelled"), :sum, :total) || 0
-    %{total: total, pending: pending, revenue: revenue}
+    shipped = Repo.aggregate(from(o in Order, where: o.status == "shipped"), :count, :id)
+    processing = Repo.aggregate(from(o in Order, where: o.status == "processing"), :count, :id)
+    delivered = Repo.aggregate(from(o in Order, where: o.status == "delivered"), :count, :id)
+    revenue = Repo.aggregate(from(o in Order, where: o.status == "shipped"), :sum, :total) || 0
+    %{shipped: shipped, processing: processing, delivered: delivered, revenue: revenue}
+  end
+
+  def orders_by_status do
+    Repo.all(
+      from o in Order,
+        group_by: o.status,
+        select: {o.status, count(o.id)}
+    )
+    |> Map.new()
+  end
+
+  def revenue_last_days(days \\ 7) do
+    since = DateTime.utc_now() |> DateTime.add(-days * 86_400, :second) |> DateTime.to_naive()
+
+    Repo.all(
+      from o in Order,
+        where: o.inserted_at >= ^since and o.status != "cancelled",
+        select: {fragment("date(?)", o.inserted_at), sum(o.total)},
+        group_by: fragment("date(?)", o.inserted_at),
+        order_by: fragment("date(?)", o.inserted_at)
+    )
   end
 
   defp generate_reference do

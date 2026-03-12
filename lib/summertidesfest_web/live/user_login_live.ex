@@ -27,13 +27,6 @@ defmodule SummertidesfestWeb.UserLoginLive do
           </p>
         </div>
 
-        <%!-- Flash error --%>
-        <%= if Phoenix.Flash.get(@flash, :error) do %>
-          <div class="mb-4 border border-red-800/50 bg-red-900/20 px-4 py-3 text-center">
-            <p class="text-red-400 mon text-sm">{Phoenix.Flash.get(@flash, :error)}</p>
-          </div>
-        <% end %>
-
         <%!-- Login card --%>
         <div class="border border-[#5C2D0A] px-8 py-10" style="background-color: rgba(13, 8, 0, 0.95);">
           <h2 class="bangers text-white text-2xl tracking-widest uppercase text-center mb-8">

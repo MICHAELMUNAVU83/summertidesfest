@@ -48,6 +48,12 @@
         <li>Gallery</li>
       </a>
       <a
+        href="/#merch"
+        class="hover:text-[#E8C87A] transition-all ease-in-out duration-300 px-3 py-2 uppercase"
+      >
+        <li>Merch</li>
+      </a>
+      <a
         href="/faqs"
         class="hover:text-[#E8C87A] transition-all ease-in-out duration-300 px-3 py-2 uppercase"
       >
@@ -55,7 +61,16 @@
       </a>
     </ul>
 
-    <div class="hidden xl:flex items-center">
+    <div class="hidden xl:flex items-center gap-3">
+      <a
+        href="/admin/orders"
+        title="Admin"
+        class="text-white/30 hover:text-white/70 transition-colors p-1.5 rounded-lg hover:bg-white/10"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        </svg>
+      </a>
       <a
         href="https://summertidesfestival.hustlesasa.shop/"
         target="_blank"
@@ -171,46 +186,50 @@
       class="hero-slide absolute inset-0 bg-cover bg-center bg-no-repeat"
       style={"background-image: url('#{slide}');"}
     >
-      <div class="w-full h-full bg-gradient-to-b from-black/50 via-black/20 to-black/85 flex flex-col justify-center items-center text-center px-4">
-        <%!-- 18+ Badge --%>
-        <div class="absolute top-24 right-4 md:right-8 bg-[#8B2500] text-white text-xs font-bold px-3 py-1 mon uppercase tracking-wider flex items-center gap-1">
-          18+ <span class="text-white/70 font-normal">| Strictly ID</span>
-        </div>
+      <%!-- Gradient: only covers the bottom third --%>
+      <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
 
-        <p class="text-[#E8C87A] uppercase tracking-[0.4em] text-xs md:text-sm mon font-semibold mb-3">
+      <%!-- 18+ Badge — top right, clear of the subject --%>
+      <div class="absolute top-24 right-4 md:right-8 bg-[#8B2500] text-white text-xs font-bold px-3 py-1 mon uppercase tracking-wider flex items-center gap-1 z-10">
+        18+ <span class="text-white/70 font-normal">| Strictly ID</span>
+      </div>
+
+      <%!-- All text anchored to the bottom --%>
+      <div class="absolute bottom-0 left-0 right-0 px-6 md:px-16 pb-14 md:pb-16 text-center z-10">
+        <p class="text-[#E8C87A] uppercase tracking-[0.4em] text-xs mon font-semibold mb-2">
           Airbeat Presents
         </p>
-        <h1 class="md:text-[100px] text-[58px] text-white marker font-bold leading-none">
+        <h1 class="text-[38px] sm:text-[52px] md:text-[90px] text-white marker font-bold leading-none">
           SUMMER TIDES
         </h1>
-        <h2 class="md:text-[80px] text-[52px] text-[#E8C87A] bangers leading-none mt-0 tracking-wider">
+        <h2 class="text-[32px] sm:text-[44px] md:text-[72px] text-[#E8C87A] bangers leading-none tracking-wider">
           SUMMER LOVE
         </h2>
-        <div class="flex items-center gap-3 mt-5">
-          <span class="text-3xl">🌴</span>
-          <p class="bangers text-[#E8C87A] text-5xl md:text-7xl tracking-wider leading-none">
+        <div class="flex items-center justify-center gap-2 mt-3">
+          <span class="text-xl sm:text-2xl">🌴</span>
+          <p class="bangers text-[#E8C87A] text-3xl sm:text-4xl md:text-6xl tracking-wider leading-none">
             JULY 2–4, 2026
           </p>
-          <span class="text-3xl">🌴</span>
+          <span class="text-xl sm:text-2xl">🌴</span>
         </div>
-        <p class="text-white/80 mon text-sm md:text-base mt-1 font-semibold tracking-wide">
+        <p class="text-white/70 mon text-sm mt-1 font-semibold tracking-wide">
           Lost Beach Club, Malindi
         </p>
-        <p class="text-white/50 mon text-xs mt-2 tracking-[0.3em] uppercase">
+        <p class="text-white/40 mon text-xs mt-1.5 tracking-[0.3em] uppercase">
           3 Days &nbsp;·&nbsp; 2 Stages &nbsp;·&nbsp; Infinite Vibes
         </p>
-        <div class="flex gap-4 mt-10 flex-wrap justify-center">
+        <div class="flex gap-4 mt-7 flex-wrap justify-center">
           <a
             href="https://summertidesfestival.hustlesasa.shop/"
             target="_blank"
             rel="noopener noreferrer"
-            class="bg-[#5C2D0A] hover:bg-[#E8C87A] hover:text-[#5C2D0A] transition-all duration-300 text-[#E8C87A] font-bold uppercase tracking-widest px-8 py-3 md:text-lg text-base bangers text-xl shadow-lg shadow-[#5C2D0A]/50"
+            class="bg-[#5C2D0A] hover:bg-[#E8C87A] hover:text-[#5C2D0A] transition-all duration-300 text-[#E8C87A] font-bold uppercase tracking-widest px-8 py-3 bangers text-xl shadow-lg shadow-[#5C2D0A]/50"
           >
             Get Tickets
           </a>
           <a
             href="/#about"
-            class="border-2 border-white/60 hover:border-[#E8C87A] hover:text-[#E8C87A] transition-all duration-300 text-white font-bold uppercase tracking-widest px-8 py-3 md:text-lg text-base bangers text-xl"
+            class="border-2 border-white/60 hover:border-[#E8C87A] hover:text-[#E8C87A] transition-all duration-300 text-white font-bold uppercase tracking-widest px-8 py-3 bangers text-xl"
           >
             Learn More
           </a>
@@ -338,11 +357,11 @@
     </div>
 
     <%!-- Videos --%>
-    <div class="w-[90%] md:w-[70%] mx-auto flex flex-col md:flex-row items-start gap-4 md:gap-6">
+    <div class="w-[90%] md:w-[70%] mx-auto flex flex-row items-start gap-3 md:gap-6">
       <%!-- Video 1 — sits higher --%>
-      <div class="w-full md:w-1/2 md:mt-0">
+      <div class="w-1/2 md:mt-0">
         <video
-          class="w-full aspect-[9/16] object-cover"
+          class="w-full aspect-[9/16] object-cover rounded-xl md:rounded-2xl"
           autoplay
           muted
           loop
@@ -353,9 +372,9 @@
         </video>
       </div>
       <%!-- Video 2 — offset lower --%>
-      <div class="w-full md:w-1/2 md:mt-20">
+      <div class="w-1/2 mt-8 md:mt-20">
         <video
-          class="w-full aspect-[9/16] object-cover"
+          class="w-full aspect-[9/16] object-cover rounded-xl md:rounded-2xl"
           autoplay
           muted
           loop
@@ -393,11 +412,11 @@
   </p>
 
   <div class="bg-black pb-16 w-full">
-    <div class="w-[90%] mx-auto grid md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div class="w-[90%] mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       <%= for artist <- @artists do %>
         <div class="artist-card group relative overflow-hidden cursor-pointer">
           <div
-            class="artist-bg md:h-[380px] h-[320px] w-full bg-cover bg-center bg-no-repeat"
+            class="artist-bg h-[220px] sm:h-[280px] md:h-[380px] w-full bg-cover bg-center bg-no-repeat"
             style={"background-image: url('#{artist.image}');"}
           >
           </div>
@@ -490,7 +509,7 @@
 
   <div class="bg-black py-8 w-full">
     <div class="md:w-[65%] w-[90%] flex justify-center items-center mx-auto mb-6">
-      <div class="w-full flex justify-between border border-[#E8C87A]/30 overflow-hidden">
+      <div class="w-full flex border border-[#E8C87A]/30 overflow-hidden">
         <div
           phx-click="select_day"
           phx-value-day="day1"
@@ -563,7 +582,7 @@
     >
       <div class="w-full bg-gradient-to-tr from-[#E8C87A]/30 to-black/80 flex flex-col text-center justify-center gap-4 items-center h-[40vh] md:h-[55vh]">
         <%= for item <- Map.get(@schedule, @selected_day, []) do %>
-          <div class="border-[3px] md:text-7xl text-5xl font-bold uppercase marker text-white p-4 border-white/30">
+          <div class="border-[3px] text-3xl sm:text-5xl md:text-7xl font-bold uppercase marker text-white p-3 md:p-4 border-white/30">
             {item.name}
           </div>
         <% end %>
@@ -586,7 +605,7 @@
   </div>
 
   <div class="py-12 w-[90%] md:w-[85%] mx-auto">
-    <div class="grid md:grid-cols-3 gap-6 mb-10">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 md:gap-6 mb-10">
       <%!-- Tier 2 Weekend Pass --%>
       <div class="ticket-card border border-white/15 hover:border-[#E8C87A]/60 p-8 flex flex-col gap-4">
         <p class="text-[#E8C87A] text-xs uppercase tracking-widest mon font-semibold">
@@ -630,7 +649,7 @@
       </div>
 
       <%!-- VIP Weekend Pass --%>
-      <div class="ticket-card border-2 border-[#E8C87A] bg-[#5C2D0A]/20 p-8 flex flex-col gap-4 relative">
+      <div class="ticket-card border-2 border-[#E8C87A] bg-[#5C2D0A]/20 p-8 flex flex-col gap-4 relative sm:col-span-2 md:col-span-1">
         <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#5C2D0A] text-[#E8C87A] text-xs uppercase tracking-widest px-5 py-1 mon font-bold whitespace-nowrap">
           Most Popular
         </div>
@@ -775,7 +794,7 @@
         </div>
       </div>
 
-      <div class="w-full h-[380px] overflow-hidden border border-[#E8C87A]/30">
+      <div class="w-full h-[260px] sm:h-[320px] md:h-[380px] overflow-hidden border border-[#E8C87A]/30">
         <iframe
           src="https://maps.google.com/maps?q=Lost+Beach+Club+Malindi+Kenya&output=embed"
           class="w-full h-full border-0"
@@ -936,6 +955,316 @@
 </div>
 
 <%!-- Partners Section --%>
+<%!-- ===================== MERCH SECTION ===================== --%>
+<div id="merch" phx-hook="Cart" class="bg-[#0D0800] pt-20 pb-16">
+
+  <%!-- Section header --%>
+  <div class="flex justify-center items-center relative py-6 overflow-x-hidden mb-2">
+    <p class="section-num">MERCH</p>
+    <div class="absolute font-bold text-white w-full">
+      <div class="flex flex-col justify-center items-center gap-3">
+        <p class="text-[#E8C87A] uppercase tracking-[0.4em] text-xs mon font-semibold">07</p>
+        <h2 class="var md:text-5xl text-3xl font-bold uppercase tracking-wide">Merch</h2>
+        <div class="h-[3px] w-[50px] bg-[#E8C87A]"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-10">
+    <p class="text-white/40 text-center text-sm mb-8 tracking-wide">Rep the festival. Limited edition Summer Love 2026 drops.</p>
+
+    <%!-- Category filter --%>
+    <%= if length(@products) > 0 do %>
+      <div class="flex items-center justify-center gap-2 flex-wrap mb-10">
+        <%= for cat <- ["All" | Enum.uniq(Enum.map(@products, & &1.category))] do %>
+          <button
+            phx-click="set_merch_category"
+            phx-value-category={cat}
+            class={[
+              "px-4 py-1.5 rounded-full text-xs font-bold border transition-all tracking-wider uppercase",
+              if(@merch_category == cat,
+                do: "bg-[#E8C87A] text-[#0D0800] border-[#E8C87A]",
+                else: "text-[#E8C87A]/50 border-[#E8C87A]/20 hover:border-[#E8C87A]/50 hover:text-[#E8C87A]"
+              )
+            ]}
+          >
+            <%= cat %>
+          </button>
+        <% end %>
+      </div>
+
+      <%!-- Product grid --%>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+        <%= for product <- filtered_products(@products, @merch_category) do %>
+          <.link
+            navigate={"/merch/#{product.id}"}
+            class="group text-left bg-[#1A0F00] rounded-2xl overflow-hidden border border-[#E8C87A]/10 hover:border-[#E8C87A]/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/40 focus:outline-none block"
+          >
+            <%!-- Image --%>
+            <div class="relative aspect-square bg-[#261500] overflow-hidden">
+              <%= if length(product.images) > 0 do %>
+                <img src={hd(product.images)} alt={product.name}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <% else %>
+                <div class="w-full h-full flex items-center justify-center">
+                  <svg class="w-10 h-10 text-[#E8C87A]/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                </div>
+              <% end %>
+
+              <div class="absolute top-2 left-2">
+                <span class="bg-[#0D0800]/80 text-[#E8C87A] text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-sm">
+                  <%= product.category %>
+                </span>
+              </div>
+
+              <%= if not product.in_stock do %>
+                <div class="absolute inset-0 bg-black/70 flex items-center justify-center">
+                  <span class="text-white/70 font-bold text-xs tracking-widest uppercase">Sold Out</span>
+                </div>
+              <% end %>
+
+              <%!-- Quick-add overlay on hover --%>
+              <%= if product.in_stock do %>
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-end justify-center pb-3 opacity-0 group-hover:opacity-100">
+                  <span class="bg-[#E8C87A] text-[#0D0800] text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">
+                    View
+                  </span>
+                </div>
+              <% end %>
+            </div>
+
+            <%!-- Info --%>
+            <div class="p-3">
+              <p class="text-white font-bold text-sm leading-tight truncate"><%= product.name %></p>
+              <p class="text-[#E8C87A] font-bold text-base mt-1">KSH <%= product.price %></p>
+              <%= if length(product.sizes) > 0 and product.sizes != ["One Size"] do %>
+                <p class="text-white/30 text-[10px] mt-0.5 truncate"><%= Enum.join(product.sizes, " · ") %></p>
+              <% end %>
+            </div>
+          </.link>
+        <% end %>
+      </div>
+
+      <div class="text-center mt-10">
+        <a href="/merch" class="inline-flex items-center gap-2 border border-[#E8C87A]/40 text-[#E8C87A] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#E8C87A]/10 transition-colors uppercase tracking-widest">
+          View Full Store →
+        </a>
+      </div>
+    <% else %>
+      <div class="text-center py-16 text-white/30">
+        <p class="text-4xl mb-3">👕</p>
+        <p class="font-bold">Merch dropping soon</p>
+        <p class="text-sm mt-1">Check back closer to the festival</p>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<%!-- ===================== FLOATING CART BUTTON ===================== --%>
+<%= if cart_count(@cart) > 0 do %>
+  <button
+    phx-click="toggle_cart"
+    class="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 bg-[#E8C87A] text-[#0D0800] font-black px-5 py-3 rounded-full shadow-2xl hover:bg-[#C9A04E] transition-all hover:scale-105 active:scale-95"
+  >
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+    </svg>
+    <span class="text-sm">Cart</span>
+    <span class="bg-[#0D0800] text-[#E8C87A] text-xs font-black rounded-full w-5 h-5 flex items-center justify-center">
+      <%= cart_count(@cart) %>
+    </span>
+  </button>
+<% end %>
+
+<%!-- ===================== PRODUCT MODAL ===================== --%>
+<%= if @selected_product do %>
+  <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div phx-click="close_product" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+
+    <div class="relative z-10 w-full sm:max-w-xl bg-[#1A0F00] sm:rounded-2xl overflow-hidden border border-[#E8C87A]/20 max-h-[92vh] overflow-y-auto">
+      <%!-- Close --%>
+      <button phx-click="close_product"
+        class="absolute top-4 right-4 z-10 w-8 h-8 bg-black/50 text-white/70 hover:text-white rounded-full flex items-center justify-center text-lg backdrop-blur-sm transition-colors">
+        ×
+      </button>
+
+      <div class="flex flex-col sm:flex-row">
+        <%!-- Image --%>
+        <div class="sm:w-[45%] aspect-square bg-[#261500] flex-shrink-0 relative">
+          <%= if length(@selected_product.images) > 0 do %>
+            <img src={hd(@selected_product.images)} alt={@selected_product.name}
+              class="w-full h-full object-cover" />
+          <% else %>
+            <div class="w-full h-full flex items-center justify-center text-[#E8C87A]/20">
+              <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+            </div>
+          <% end %>
+          <%!-- Extra images strip --%>
+          <%= if length(@selected_product.images) > 1 do %>
+            <div class="absolute bottom-2 left-2 right-2 flex gap-1.5 overflow-x-auto">
+              <%= for img <- tl(@selected_product.images) do %>
+                <div class="w-10 h-10 rounded-lg border-2 border-white/30 overflow-hidden flex-shrink-0">
+                  <img src={img} class="w-full h-full object-cover" />
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
+        <%!-- Details --%>
+        <div class="flex-1 p-5 sm:p-6 flex flex-col gap-4">
+          <div>
+            <span class="text-[#E8C87A]/50 text-[10px] font-bold uppercase tracking-widest">
+              <%= @selected_product.category %>
+            </span>
+            <h3 class="text-white font-black text-xl leading-tight mt-1">
+              <%= @selected_product.name %>
+            </h3>
+            <p class="text-[#E8C87A] font-black text-2xl mt-2">KSH <%= @selected_product.price %></p>
+          </div>
+
+          <%= if @selected_product.description do %>
+            <p class="text-white/50 text-sm leading-relaxed"><%= @selected_product.description %></p>
+          <% end %>
+
+          <%= if @selected_product.in_stock do %>
+            <form phx-submit="add_to_cart">
+              <input type="hidden" name="product_id" value={@selected_product.id} />
+              <input type="hidden" name="size" value={@selected_size || "One Size"} />
+
+              <%!-- Size selector --%>
+              <%= if length(@selected_product.sizes) > 0 do %>
+                <div class="mb-4">
+                  <p class="text-white/50 text-xs font-bold uppercase tracking-widest mb-2">
+                    Size
+                    <%= if @selected_size do %>
+                      <span class="text-[#E8C87A] ml-1">— <%= @selected_size %></span>
+                    <% end %>
+                  </p>
+                  <div class="flex flex-wrap gap-2">
+                    <%= for size <- @selected_product.sizes do %>
+                      <button
+                        type="button"
+                        phx-click="select_size"
+                        phx-value-size={size}
+                        class={[
+                          "px-3.5 py-2 rounded-xl border text-sm font-bold transition-all",
+                          if(@selected_size == size,
+                            do: "bg-[#E8C87A] text-[#0D0800] border-[#E8C87A]",
+                            else: "border-[#E8C87A]/20 text-[#E8C87A]/60 hover:border-[#E8C87A]/50 hover:text-[#E8C87A]"
+                          )
+                        ]}
+                      >
+                        <%= size %>
+                      </button>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+
+              <button type="submit"
+                class="w-full bg-[#E8C87A] text-[#0D0800] font-black py-3.5 rounded-xl text-sm uppercase tracking-widest hover:bg-[#C9A04E] transition-colors">
+                Add to Cart
+              </button>
+            </form>
+          <% else %>
+            <div class="border border-[#E8C87A]/20 rounded-xl p-4 text-center">
+              <p class="text-[#E8C87A]/50 font-bold text-sm">Out of Stock</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%!-- ===================== CART DRAWER ===================== --%>
+<div class={[
+  "fixed inset-y-0 right-0 z-50 flex flex-col w-full sm:w-[400px] bg-[#1A0F00] border-l border-[#E8C87A]/20 transform transition-transform duration-300",
+  if(@cart_open, do: "translate-x-0", else: "translate-x-full")
+]}>
+  <div class="flex items-center justify-between px-5 py-4 border-b border-[#E8C87A]/20 flex-shrink-0">
+    <div>
+      <h2 class="text-white font-black text-lg">Your Cart</h2>
+      <p class="text-white/40 text-xs mt-0.5"><%= cart_count(@cart) %> item<%= if cart_count(@cart) != 1, do: "s" %></p>
+    </div>
+    <button phx-click="close_cart"
+      class="w-8 h-8 flex items-center justify-center text-white/40 hover:text-white text-xl rounded-lg hover:bg-white/10 transition-colors">
+      ×
+    </button>
+  </div>
+
+  <div class="flex-1 overflow-y-auto px-5 py-4">
+    <%= if map_size(@cart) == 0 do %>
+      <div class="flex flex-col items-center justify-center h-full gap-3 text-center py-16">
+        <svg class="w-12 h-12 text-[#E8C87A]/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+        </svg>
+        <p class="text-white/40 font-bold text-sm">Your cart is empty</p>
+        <button phx-click="close_cart"
+          class="text-[#E8C87A] text-xs underline underline-offset-2 hover:text-[#C9A04E] transition-colors">
+          Browse Merch
+        </button>
+      </div>
+    <% else %>
+      <div class="space-y-3">
+        <%= for {key, item} <- @cart do %>
+          <div class="flex gap-3 bg-[#261500] rounded-xl p-3 border border-[#E8C87A]/10">
+            <div class="w-14 h-14 rounded-lg bg-[#3A1F00] overflow-hidden flex-shrink-0">
+              <%= if item.image do %>
+                <img src={item.image} alt={item.name} class="w-full h-full object-cover" />
+              <% else %>
+                <div class="w-full h-full flex items-center justify-center text-[#E8C87A]/20 text-xl">👕</div>
+              <% end %>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-white font-bold text-sm truncate"><%= item.name %></p>
+              <p class="text-[#E8C87A]/50 text-xs">
+                <%= if item.size && item.size != "One Size", do: "Size: #{item.size}", else: "One Size" %>
+              </p>
+              <p class="text-[#E8C87A] font-bold text-sm mt-1">KSH <%= item.price * item.qty %></p>
+            </div>
+            <div class="flex flex-col items-center gap-1.5 flex-shrink-0">
+              <button phx-click="remove_from_cart" phx-value-key={key}
+                class="text-white/20 hover:text-red-400 transition-colors text-xs w-5 h-5 flex items-center justify-center">✕</button>
+              <div class="flex items-center gap-1">
+                <button phx-click="update_qty" phx-value-key={key} phx-value-delta="-1"
+                  class="w-6 h-6 bg-[#0D0800] text-[#E8C87A] font-bold rounded text-sm hover:bg-[#E8C87A]/20 transition-colors flex items-center justify-center">−</button>
+                <span class="text-white text-sm font-bold w-5 text-center"><%= item.qty %></span>
+                <button phx-click="update_qty" phx-value-key={key} phx-value-delta="1"
+                  class="w-6 h-6 bg-[#0D0800] text-[#E8C87A] font-bold rounded text-sm hover:bg-[#E8C87A]/20 transition-colors flex items-center justify-center">+</button>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= if map_size(@cart) > 0 do %>
+    <div class="flex-shrink-0 px-5 py-4 border-t border-[#E8C87A]/20">
+      <div class="flex justify-between items-center mb-1">
+        <span class="text-white/50 text-sm font-bold">Subtotal</span>
+        <span class="text-[#E8C87A] font-black text-xl">KSH <%= cart_total(@cart) %></span>
+      </div>
+      <p class="text-white/20 text-xs mb-4">Shipping calculated at checkout</p>
+      <a href="/merch"
+        class="block w-full bg-[#E8C87A] text-[#0D0800] font-black py-3.5 rounded-xl text-sm uppercase tracking-widest hover:bg-[#C9A04E] transition-colors text-center">
+        Checkout →
+      </a>
+    </div>
+  <% end %>
+</div>
+
+<%!-- Cart backdrop --%>
+<%= if @cart_open do %>
+  <div phx-click="close_cart" class="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm"></div>
+<% end %>
+
 <div id="partners" class="bg-gradient-to-b from-black to-[#040e12] pt-20">
   <div class="flex justify-center items-center relative py-6 overflow-x-hidden">
     <p class="section-num">PARTNERS</p>

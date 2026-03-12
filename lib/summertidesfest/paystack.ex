@@ -1,4 +1,4 @@
-defmodule Oasis.Paystack do
+defmodule Summertidesfest.Paystack do
   @moduledoc "Paystack payment gateway integration."
 
   @api_base "https://api.paystack.co"
@@ -19,14 +19,13 @@ defmodule Oasis.Paystack do
       "callback_url" => callback_url()
     }
 
-    case IO.inspect(
-           Req.post("#{@api_base}/transaction/initialize",
-             headers: headers(),
-             json: body,
-             retry: :transient,
-             max_retries: 3,
-             receive_timeout: 30_000
-           )
+    case Req.post("#{@api_base}/transaction/initialize",
+           headers: headers(),
+           json: body,
+           receive_timeout: 30_000,
+           retry: :transient,
+           max_retries: 3,
+           retry_delay: fn attempt -> attempt * 1_000 end
          ) do
       {:ok, %{status: 200, body: %{"data" => data}}} ->
         {:ok,
@@ -38,6 +37,9 @@ defmodule Oasis.Paystack do
       {:ok, %{body: body}} ->
         {:error, body["message"] || "Initialization failed"}
 
+      {:error, %Req.TransportError{reason: :timeout}} ->
+        {:error, "Request timed out. Please try again."}
+
       {:error, reason} ->
         {:error, inspect(reason)}
     end
@@ -47,7 +49,10 @@ defmodule Oasis.Paystack do
   def verify(reference) do
     case Req.get("#{@api_base}/transaction/verify/#{reference}",
            headers: headers(),
-           receive_timeout: 30_000
+           receive_timeout: 30_000,
+           retry: :transient,
+           max_retries: 3,
+           retry_delay: fn attempt -> attempt * 1_000 end
          ) do
       {:ok, %{status: 200, body: %{"data" => data}}} ->
         if data["status"] == "success" do
@@ -58,6 +63,9 @@ defmodule Oasis.Paystack do
 
       {:ok, %{body: body}} ->
         {:error, body["message"] || "Verification failed"}
+
+      {:error, %Req.TransportError{reason: :timeout}} ->
+        {:error, "Request timed out. Please try again."}
 
       {:error, reason} ->
         {:error, inspect(reason)}

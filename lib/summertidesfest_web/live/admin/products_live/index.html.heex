@@ -1,89 +1,26 @@
-<%!-- Mobile overlay --%>
-<%= if @sidebar_open do %>
-  <div phx-click="toggle_sidebar" class="fixed inset-0 z-20 bg-black/40 lg:hidden"></div>
-<% end %>
-
 <div class="flex h-screen overflow-hidden">
-
-  <%!-- ===================== SIDEBAR ===================== --%>
-  <aside class={[
-    "fixed inset-y-0 left-0 z-30 flex flex-col w-56 bg-white border-r border-stone-200 transition-transform duration-200 lg:static lg:translate-x-0",
-    if(@sidebar_open, do: "translate-x-0", else: "-translate-x-full")
-  ]}>
-    <div class="flex items-center gap-2.5 px-5 h-14 border-b border-stone-100 flex-shrink-0">
-      <div class="w-8 h-8 rounded-lg bg-[#5C2D0A] flex items-center justify-center flex-shrink-0">
-        <img src="/images/summertides.png" alt="" class="h-5 w-auto" />
-      </div>
-      <div class="min-w-0">
-        <p class="text-[#5C2D0A] font-black text-sm leading-none truncate">Summer Tides</p>
-        <p class="text-stone-400 text-[10px] uppercase tracking-widest mt-0.5">Admin</p>
-      </div>
-    </div>
-
-    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
-      <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 px-3 pt-1 pb-2">Menu</p>
-
-      <a href="/admin/orders" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-stone-500 hover:bg-stone-50 hover:text-stone-800 text-sm font-medium transition-colors">
-        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-        </svg>
-        Orders
-      </a>
-
-      <a href="/admin/products" class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[#5C2D0A]/10 text-[#5C2D0A] text-sm font-semibold">
-        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-        </svg>
-        Products
-      </a>
-
-      <a href="/merch" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-stone-500 hover:bg-stone-50 hover:text-stone-800 text-sm font-medium transition-colors">
-        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-        </svg>
-        View Shop
-      </a>
-
-      <div class="pt-4">
-        <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 px-3 pb-2">Other</p>
-        <a href="/" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-stone-400 hover:bg-stone-50 hover:text-stone-600 text-sm font-medium transition-colors">
-          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-          </svg>
-          Festival Site
-        </a>
-        <a href="/users/log_out" data-method="delete" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-stone-400 hover:bg-red-50 hover:text-red-500 text-sm font-medium transition-colors">
-          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-          </svg>
-          Sign Out
-        </a>
-      </div>
-    </nav>
-
-    <div class="px-5 py-3 border-t border-stone-100 flex-shrink-0">
-      <p class="text-stone-300 text-xs">© Summer Tides 2026</p>
-    </div>
-  </aside>
+  <.sidebar active="products" open={@sidebar_open} />
 
   <%!-- ===================== MAIN ===================== --%>
   <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
 
     <%!-- Top bar --%>
-    <header class="flex-shrink-0 h-14 bg-white border-b border-stone-200 flex items-center px-5 gap-4">
-      <button phx-click="toggle_sidebar" class="lg:hidden p-1.5 rounded-md text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      </button>
-      <span class="text-stone-500 text-sm flex-1">Products</span>
-      <button phx-click="new_product"
-        class="flex items-center gap-1.5 bg-[#5C2D0A] text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-[#3A1A04] transition-colors">
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
-        </svg>
-        Add Product
-      </button>
+    <header class="flex-shrink-0 h-14 bg-white border-b border-stone-200 flex items-center">
+      <div class="w-full max-w-5xl mx-auto px-5 md:px-8 flex items-center gap-4">
+        <button phx-click="toggle_sidebar" class="lg:hidden p-1.5 rounded-md text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+        <span class="bangers text-[#5C2D0A] text-xl tracking-wider flex-1">Products</span>
+        <button phx-click="new_product"
+          class="flex items-center gap-1.5 bg-[#5C2D0A] text-[#E8C87A] text-sm font-bold px-4 py-2 rounded-lg hover:bg-[#3A1A04] transition-colors mon uppercase tracking-wider">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+          </svg>
+          Add Product
+        </button>
+      </div>
     </header>
 
     <div class="flex-1 overflow-y-auto bg-stone-50">
@@ -92,8 +29,8 @@
         <%!-- Page heading + stats --%>
         <div class="flex items-start justify-between gap-4 mb-6">
           <div>
-            <h1 class="text-xl font-black text-stone-800">Products</h1>
-            <p class="text-stone-400 text-sm mt-0.5">
+            <h1 class="bangers text-3xl text-stone-800 tracking-wide">Products</h1>
+            <p class="mon text-stone-400 text-sm mt-0.5">
               <%= length(@products) %> total ·
               <%= Enum.count(@products, & &1.in_stock) %> in stock ·
               <%= Enum.count(@products, &(not &1.in_stock)) %> sold out

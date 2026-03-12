@@ -89,6 +89,7 @@ defmodule SummertidesfestWeb do
       import Phoenix.HTML
       # Core UI components
       import SummertidesfestWeb.CoreComponents
+      import SummertidesfestWeb.AdminComponents
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS

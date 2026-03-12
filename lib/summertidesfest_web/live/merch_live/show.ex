@@ -1,72 +1,61 @@
-defmodule SummertidesfestWeb.MerchLive.Index do
+defmodule SummertidesfestWeb.MerchLive.Show do
   use SummertidesfestWeb, :live_view
 
   alias Summertidesfest.Shop
   alias Summertidesfest.Paystack
 
   @impl true
-  def mount(_params, _session, socket) do
-    products = Shop.list_products()
+  def mount(%{"id" => id}, _session, socket) do
+    product = Shop.get_product!(String.to_integer(id))
 
     {:ok,
      socket
-     |> assign(:page_title, "Merch — Summer Tides 2026")
-     |> assign(:products, products)
-     |> assign(:filtered_products, products)
-     |> assign(:categories, ["All" | Shop.categories()])
-     |> assign(:active_category, "All")
+     |> assign(:page_title, "#{product.name} — Summer Tides Merch")
+     |> assign(:product, product)
+     |> assign(:selected_size, default_size(product))
+     |> assign(:selected_image, 0)
+     |> assign(:qty, 1)
      |> assign(:cart, %{})
      |> assign(:cart_open, false)
-     |> assign(:selected_product, nil)
      |> assign(:checkout_open, false)
-     |> assign(:order_complete, nil)
      |> assign(:checkout_form, %{"customer_name" => "", "customer_email" => "", "customer_phone" => ""})
      |> assign(:checkout_errors, %{})
      |> assign(:loading, false)}
   end
 
+  # ── Product interactions ───────────────────────────────────────────────────
+
   @impl true
-  def handle_event("filter_category", %{"category" => category}, socket) do
-    filtered =
-      if category == "All" do
-        socket.assigns.products
-      else
-        Enum.filter(socket.assigns.products, &(&1.category == category))
-      end
+  def handle_event("select_size", %{"size" => size}, socket) do
+    {:noreply, assign(socket, :selected_size, size)}
+  end
+
+  def handle_event("select_image", %{"index" => idx}, socket) do
+    {:noreply, assign(socket, :selected_image, String.to_integer(idx))}
+  end
+
+  def handle_event("set_qty", %{"delta" => delta}, socket) do
+    new_qty = max(1, socket.assigns.qty + String.to_integer(delta))
+    {:noreply, assign(socket, :qty, new_qty)}
+  end
+
+  # ── Cart ───────────────────────────────────────────────────────────────────
+
+  def handle_event("add_to_cart", _params, socket) do
+    %{product: product, selected_size: size, qty: qty, cart: cart} = socket.assigns
+    key = "#{product.id}:#{size}"
+
+    updated_cart =
+      Map.update(cart, key, %{product: product, size: size, qty: qty}, fn item ->
+        %{item | qty: item.qty + qty}
+      end)
 
     {:noreply,
      socket
-     |> assign(:active_category, category)
-     |> assign(:filtered_products, filtered)}
-  end
-
-  def handle_event("open_product", %{"id" => id}, socket) do
-    product = Shop.get_product!(String.to_integer(id))
-    {:noreply, assign(socket, :selected_product, product)}
-  end
-
-  def handle_event("close_product", _params, socket) do
-    {:noreply, assign(socket, :selected_product, nil)}
-  end
-
-  def handle_event("add_to_cart", %{"product_id" => pid, "size" => size}, socket) do
-    product = Shop.get_product!(String.to_integer(pid))
-    cart = socket.assigns.cart
-    key = "#{pid}:#{size}"
-
-    updated_cart =
-      Map.update(cart, key, %{product: product, size: size, qty: 1}, fn item ->
-        %{item | qty: item.qty + 1}
-      end)
-
-    socket =
-      socket
-      |> assign(:cart, updated_cart)
-      |> assign(:cart_open, true)
-      |> assign(:selected_product, nil)
-      |> push_event("save_merch_cart", %{cart: serialize_cart(updated_cart)})
-
-    {:noreply, socket}
+     |> assign(:cart, updated_cart)
+     |> assign(:cart_open, true)
+     |> assign(:qty, 1)
+     |> push_event("save_merch_cart", %{cart: serialize_cart(updated_cart)})}
   end
 
   def handle_event("remove_from_cart", %{"key" => key}, socket) do
@@ -104,6 +93,23 @@ defmodule SummertidesfestWeb.MerchLive.Index do
     {:noreply, assign(socket, :cart_open, false)}
   end
 
+  def handle_event("restore_cart", %{"cart" => items}, socket) do
+    cart =
+      Enum.reduce(items, %{}, fn item, acc ->
+        try do
+          product = Shop.get_product!(item["product_id"])
+          key = "#{item["product_id"]}:#{item["size"]}"
+          Map.put(acc, key, %{product: product, size: item["size"], qty: item["qty"]})
+        rescue
+          _ -> acc
+        end
+      end)
+
+    {:noreply, assign(socket, :cart, cart)}
+  end
+
+  # ── Checkout ──────────────────────────────────────────────────────────────
+
   def handle_event("open_checkout", _params, socket) do
     {:noreply, socket |> assign(:checkout_open, true) |> assign(:cart_open, false)}
   end
@@ -123,7 +129,6 @@ defmodule SummertidesfestWeb.MerchLive.Index do
   def handle_event("submit_order", _params, socket) do
     form = socket.assigns.checkout_form
     cart = socket.assigns.cart
-
     errors = validate_checkout(form)
 
     if map_size(errors) > 0 do
@@ -171,39 +176,7 @@ defmodule SummertidesfestWeb.MerchLive.Index do
     end
   end
 
-  def handle_event("restore_cart", %{"cart" => items}, socket) do
-    cart =
-      Enum.reduce(items, %{}, fn item, acc ->
-        try do
-          product = Shop.get_product!(item["product_id"])
-          key = "#{item["product_id"]}:#{item["size"]}"
-          Map.put(acc, key, %{product: product, size: item["size"], qty: item["qty"]})
-        rescue
-          _ -> acc
-        end
-      end)
-
-    {:noreply, assign(socket, :cart, cart)}
-  end
-
-  def handle_event("close_success", _params, socket) do
-    {:noreply, assign(socket, :order_complete, nil)}
-  end
-
-  defp validate_checkout(form) do
-    errors = %{}
-    errors = if form["customer_name"] == "", do: Map.put(errors, "customer_name", "Name is required"), else: errors
-    errors = if form["customer_email"] == "", do: Map.put(errors, "customer_email", "Email is required"), else: errors
-
-    errors =
-      if form["customer_email"] != "" and not String.match?(form["customer_email"], ~r/^[^\s]+@[^\s]+$/) do
-        Map.put(errors, "customer_email", "Enter a valid email")
-      else
-        errors
-      end
-
-    errors
-  end
+  # ── Helpers ───────────────────────────────────────────────────────────────
 
   defp serialize_cart(cart) do
     Enum.map(cart, fn {key, item} ->
@@ -242,4 +215,22 @@ defmodule SummertidesfestWeb.MerchLive.Index do
 
     "KSH #{formatted}"
   end
+
+  defp validate_checkout(form) do
+    errors = %{}
+    errors = if form["customer_name"] == "", do: Map.put(errors, "customer_name", "Name is required"), else: errors
+    errors = if form["customer_email"] == "", do: Map.put(errors, "customer_email", "Email is required"), else: errors
+
+    errors =
+      if form["customer_email"] != "" and not String.match?(form["customer_email"], ~r/^[^\s]+@[^\s]+$/) do
+        Map.put(errors, "customer_email", "Enter a valid email")
+      else
+        errors
+      end
+
+    errors
+  end
+
+  defp default_size(%{sizes: [first | _]}), do: first
+  defp default_size(_), do: "One Size"
 end
