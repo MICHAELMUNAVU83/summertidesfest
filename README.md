@@ -178,18 +178,78 @@ mix test
 
 ## Deployment
 
-Follow the [Phoenix deployment guide](https://hexdocs.pm/phoenix/deployment.html). Key steps:
+### Required environment variables on the server
 
 ```bash
-# Build assets for production
-mix assets.deploy
-
-# Run migrations in production
-mix ecto.migrate
-
-# Start the server
-PHX_HOST=summertidesfest.com mix phx.server
+export MIX_ENV=prod
+export DATABASE_URL="ecto://user:pass@localhost/summertidesfest_prod"
+export SECRET_KEY_BASE="$(mix phx.gen.secret)"   # run once locally to generate
+export PHX_HOST="summertidesfest.com"             # or your server IP
+export PORT=4000
+export PAYSTACK_SECRET_KEY="sk_live_..."
 ```
+
+### Build & deploy steps
+
+```bash
+# 1. Install deps (prod only, no dev/test)
+MIX_ENV=prod mix deps.get --only prod
+
+# 2. Compile the app
+MIX_ENV=prod mix compile
+
+# 3. Compile assets (creates priv/static/assets/app.js + app.css + cache_manifest.json)
+MIX_ENV=prod mix assets.deploy
+
+# 4. Run database migrations
+MIX_ENV=prod mix ecto.migrate
+
+# 5. Seed the database (first deploy only)
+MIX_ENV=prod mix run priv/repo/seeds.exs
+
+# 6. Start the server
+MIX_ENV=prod mix phx.server
+# or as a background process:
+MIX_ENV=prod PHX_SERVER=true mix phx.server
+```
+
+> ⚠️ **Never run `mix phx.server` without `MIX_ENV=prod`** on your production server.
+> Running in dev mode serves uncompiled assets via a watcher process that won't be available remotely.
+
+### `crypto.randomUUID` on plain HTTP
+
+Phoenix LiveView calls `crypto.randomUUID()` which browsers restrict to **secure contexts** (HTTPS or `localhost`).
+If you're running over plain HTTP on a bare IP address, a polyfill is already included in `assets/js/app.js` to handle this.
+For production, the proper fix is to put the app behind **nginx + Let's Encrypt TLS**:
+
+```nginx
+server {
+    listen 80;
+    server_name summertidesfest.com;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name summertidesfest.com;
+
+    ssl_certificate     /etc/letsencrypt/live/summertidesfest.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/summertidesfest.com/privkey.pem;
+
+    location / {
+        proxy_pass         http://127.0.0.1:4000;
+        proxy_http_version 1.1;
+        proxy_set_header   Upgrade $http_upgrade;
+        proxy_set_header   Connection "upgrade";
+        proxy_set_header   Host $host;
+        proxy_set_header   X-Real-IP $remote_addr;
+        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+Run `sudo certbot --nginx -d summertidesfest.com` to generate the certificate.
 
 ---
 
