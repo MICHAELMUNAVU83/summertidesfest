@@ -2,7 +2,7 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
-import Chart from "chart.js/auto"
+// Chart.js is loaded via CDN in root.html.heex — available globally as window.Chart
 
 // crypto.randomUUID polyfill — required by Phoenix LiveView on HTTP (non-secure) contexts.
 // Browsers only expose crypto.randomUUID on localhost or HTTPS. This fallback ensures
