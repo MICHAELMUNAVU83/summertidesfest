@@ -4,6 +4,17 @@ import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import Chart from "chart.js/auto"
 
+// crypto.randomUUID polyfill — required by Phoenix LiveView on HTTP (non-secure) contexts.
+// Browsers only expose crypto.randomUUID on localhost or HTTPS. This fallback ensures
+// LiveView works when accessed over plain HTTP (e.g. a bare IP address in staging/prod).
+if (typeof crypto.randomUUID !== "function") {
+  crypto.randomUUID = function () {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+      (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)
+    )
+  }
+}
+
 // Navbar scroll hook
 let NavBar = {
   mounted() {
