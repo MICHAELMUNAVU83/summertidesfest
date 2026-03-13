@@ -607,8 +607,43 @@
   <div class="py-12 w-[90%] md:w-[85%] mx-auto">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 md:gap-6 mb-10">
 
-      <%!-- Tier 2 — available, highlighted --%>
-      <div class="ticket-card border-2 border-[#E8C87A] bg-[#5C2D0A]/20 p-8 flex flex-col gap-4 relative">
+      <%!-- Tier 1 — sold out --%>
+      <div class="ticket-card border border-white/10 p-8 flex flex-col gap-4 opacity-60 relative">
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-white/10 text-white/50 text-xs uppercase tracking-widest px-5 py-1 mon font-bold whitespace-nowrap">
+          Sold Out
+        </div>
+        <p class="text-white/40 text-xs uppercase tracking-widest mon font-semibold mt-2">
+          Tier 1
+        </p>
+        <h3 class="text-white font-bold text-2xl bangers tracking-wider uppercase">Tier 1</h3>
+        <div class="flex items-end gap-1">
+          <p class="text-white/60 text-4xl font-bold bangers tracking-wider line-through decoration-red-400/60">KES 4,000</p>
+        </div>
+        <p class="text-white/30 mon text-xs -mt-2">
+          Admits you to 3 days of the festival
+        </p>
+        <div class="h-[1px] bg-white/10 my-1"></div>
+        <ul class="flex flex-col gap-2 text-white/40 mon text-sm flex-1">
+          <li class="flex items-center gap-2">
+            <span class="text-white/30 font-bold">✓</span> Full 3-day festival access (July 2–4)
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-white/30 font-bold">✓</span> Both main stages
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-white/30 font-bold">✓</span> Lost Beach Club, Malindi
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-white/30 font-bold">✓</span> 18+ Strictly ID
+          </li>
+        </ul>
+        <div class="mt-2 w-full text-center border border-white/10 text-white/30 font-bold uppercase tracking-wider py-3 text-sm bangers tracking-widest cursor-not-allowed">
+          Sold Out
+        </div>
+      </div>
+
+      <%!-- Tier 2 — available, highlighted (centre) --%>
+      <div class="ticket-card border-2 border-[#E8C87A] bg-[#5C2D0A]/20 p-8 flex flex-col gap-4 relative md:-mt-4 md:shadow-2xl md:shadow-[#5C2D0A]/30">
         <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#5C2D0A] text-[#E8C87A] text-xs uppercase tracking-widest px-5 py-1 mon font-bold whitespace-nowrap">
           Now Live
         </div>
@@ -661,41 +696,6 @@
         <h3 class="text-white font-bold text-2xl bangers tracking-wider uppercase">Pre-Sale</h3>
         <div class="flex items-end gap-1">
           <p class="text-white/60 text-4xl font-bold bangers tracking-wider line-through decoration-red-400/60">KES 3,000</p>
-        </div>
-        <p class="text-white/30 mon text-xs -mt-2">
-          Admits you to 3 days of the festival
-        </p>
-        <div class="h-[1px] bg-white/10 my-1"></div>
-        <ul class="flex flex-col gap-2 text-white/40 mon text-sm flex-1">
-          <li class="flex items-center gap-2">
-            <span class="text-white/30 font-bold">✓</span> Full 3-day festival access (July 2–4)
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-white/30 font-bold">✓</span> Both main stages
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-white/30 font-bold">✓</span> Lost Beach Club, Malindi
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-white/30 font-bold">✓</span> 18+ Strictly ID
-          </li>
-        </ul>
-        <div class="mt-2 w-full text-center border border-white/10 text-white/30 font-bold uppercase tracking-wider py-3 text-sm bangers tracking-widest cursor-not-allowed">
-          Sold Out
-        </div>
-      </div>
-
-      <%!-- Tier 1 — sold out --%>
-      <div class="ticket-card border border-white/10 p-8 flex flex-col gap-4 opacity-60 relative">
-        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-white/10 text-white/50 text-xs uppercase tracking-widest px-5 py-1 mon font-bold whitespace-nowrap">
-          Sold Out
-        </div>
-        <p class="text-white/40 text-xs uppercase tracking-widest mon font-semibold mt-2">
-          Tier 1
-        </p>
-        <h3 class="text-white font-bold text-2xl bangers tracking-wider uppercase">Tier 1</h3>
-        <div class="flex items-end gap-1">
-          <p class="text-white/60 text-4xl font-bold bangers tracking-wider line-through decoration-red-400/60">KES 4,000</p>
         </div>
         <p class="text-white/30 mon text-xs -mt-2">
           Admits you to 3 days of the festival
