@@ -112,3 +112,30 @@ html {
 #navbar {
   transition: background-color 0.4s ease;
 }
+
+/* Gallery masonry entrance animation */
+@keyframes galleryFadeUp {
+  from { opacity: 0; transform: translateY(28px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+.gallery-item {
+  opacity: 0;
+  transform: translateY(28px) scale(0.97);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform, opacity;
+}
+
+.gallery-visible {
+  animation: galleryFadeUp 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+/* Lightbox fade-in */
+@keyframes lbFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes lbZoomIn {
+  from { opacity: 0; transform: scale(0.88); }
+  to   { opacity: 1; transform: scale(1); }
+}

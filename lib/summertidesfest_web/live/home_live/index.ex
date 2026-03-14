@@ -39,15 +39,37 @@ defmodule SummertidesfestWeb.HomeLive.Index do
     "/new_images/END02403.jpg",
     "/new_images/DSC07190.jpg",
     "/new_images/END02181.jpg",
-    "/new_images/SUM05090.jpg"
+    "/new_images/SUM05090.jpg",
+    "/new_images/DSC03862-Enhanced-NR.jpg",
+    "/new_images/DSC07021.jpg",
+    "/new_images/DSC07181.jpg",
+    "/new_images/DSC07213.jpg",
+    "/new_images/DSC08210.jpg",
+    "/new_images/END01986.jpg",
+    "/new_images/END02020.jpg",
+    "/new_images/END02027.jpg",
+    "/new_images/END02114.jpg",
+    "/new_images/END02370.jpg",
+    "/new_images/SUM05035.jpg",
+    "/new_images/SUM05160.jpg",
+    "/new_images/SUM05180.jpg",
+    "/new_images/END02025.jpg",
+    "/new_images/DSC03778.jpg",
+    "/new_images/DSC07009-Enhanced-NR.jpg",
+    "/new_images/END02081.jpg"
   ]
 
   @hero_slides [
+    "/new_images/SUM05030.jpg",
+    "/new_images/END02317.jpg",
+    "/new_images/DSC07176.jpg",
+    "/new_images/SUM05149.jpg",
+    "/new_images/END02019.jpg",
     "/new_images/DSC03778.jpg",
     "/new_images/SUM05160.jpg",
     "/new_images/END02025.jpg",
     "/new_images/DSC07009-Enhanced-NR.jpg",
-    "/new_images/SUM05035.jpg"
+    "/new_images/SUM05180.jpg"
   ]
 
   @schedule %{

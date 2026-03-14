@@ -274,11 +274,193 @@ let MerchCart = {
   }
 }
 
+// Gallery3D — Three.js floating particles background + 3D tilt + lightbox
+let Gallery3D = {
+  mounted() {
+    this._items = []
+    this._destroyed = false
+    this.setupParticles()
+    this.setupTilt()
+    this.setupLightbox()
+    this.setupEntrance()
+  },
+
+  setupParticles() {
+    if (typeof THREE === 'undefined') return
+    const el = this.el
+    const w = el.offsetWidth || window.innerWidth
+    const h = Math.min(el.offsetHeight || 600, 900)
+
+    const scene = new THREE.Scene()
+    const camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 100)
+    camera.position.z = 4
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
+    renderer.setSize(w, h)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    Object.assign(renderer.domElement.style, {
+      position: 'absolute', top: '0', left: '0',
+      width: '100%', height: '100%',
+      pointerEvents: 'none', zIndex: '0', opacity: '0.6'
+    })
+    el.insertBefore(renderer.domElement, el.firstChild)
+
+    // Golden particles
+    const count = 220
+    const pos = new Float32Array(count * 3)
+    for (let i = 0; i < count; i++) {
+      pos[i * 3]     = (Math.random() - 0.5) * 18
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 10
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 6
+    }
+    const geo = new THREE.BufferGeometry()
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3))
+    const mat = new THREE.PointsMaterial({ color: 0xE8C87A, size: 0.045, transparent: true, opacity: 0.55, sizeAttenuation: true })
+    const points = new THREE.Points(geo, mat)
+    scene.add(points)
+
+    // Secondary smaller white particles
+    const pos2 = new Float32Array(120 * 3)
+    for (let i = 0; i < 120; i++) {
+      pos2[i * 3]     = (Math.random() - 0.5) * 18
+      pos2[i * 3 + 1] = (Math.random() - 0.5) * 10
+      pos2[i * 3 + 2] = (Math.random() - 0.5) * 6
+    }
+    const geo2 = new THREE.BufferGeometry()
+    geo2.setAttribute('position', new THREE.BufferAttribute(pos2, 3))
+    const mat2 = new THREE.PointsMaterial({ color: 0xffffff, size: 0.02, transparent: true, opacity: 0.25 })
+    scene.add(new THREE.Points(geo2, mat2))
+
+    this._mouse = { x: 0, y: 0 }
+    this._mouseCb = (e) => {
+      const rect = el.getBoundingClientRect()
+      this._mouse.x = ((e.clientX - rect.left) / w - 0.5) * 2
+      this._mouse.y = -((e.clientY - rect.top) / h - 0.5) * 2
+    }
+    el.addEventListener('mousemove', this._mouseCb)
+
+    let frameId
+    const animate = () => {
+      if (this._destroyed) return
+      frameId = requestAnimationFrame(animate)
+      points.rotation.y += 0.0004
+      points.rotation.x += 0.00015
+      camera.position.x += (this._mouse.x * 0.25 - camera.position.x) * 0.04
+      camera.position.y += (this._mouse.y * 0.18 - camera.position.y) * 0.04
+      renderer.render(scene, camera)
+    }
+    animate()
+
+    this._cancelFrame = () => { this._destroyed = true; cancelAnimationFrame(frameId) }
+    this._renderer3d = renderer
+  },
+
+  setupTilt() {
+    const items = this.el.querySelectorAll('[data-tilt]')
+    items.forEach(item => {
+      this._items.push(item)
+      const onMove = (e) => {
+        const r = item.getBoundingClientRect()
+        const x = (e.clientX - r.left) / r.width - 0.5
+        const y = (e.clientY - r.top) / r.height - 0.5
+        item.style.transform = `perspective(900px) rotateX(${-y * 7}deg) rotateY(${x * 7}deg) scale(1.03)`
+        item.style.zIndex = '20'
+      }
+      const onLeave = () => {
+        item.style.transform = 'perspective(900px) rotateX(0) rotateY(0) scale(1)'
+        item.style.zIndex = ''
+      }
+      item.addEventListener('mousemove', onMove)
+      item.addEventListener('mouseleave', onLeave)
+      item._glCleanup = () => { item.removeEventListener('mousemove', onMove); item.removeEventListener('mouseleave', onLeave) }
+    })
+  },
+
+  setupLightbox() {
+    const items = this.el.querySelectorAll('[data-src]')
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        const src = item.dataset.src
+        this._openLightbox(src, items, item)
+      })
+    })
+  },
+
+  _openLightbox(src, items, current) {
+    const allSrcs = Array.from(items).map(i => i.dataset.src)
+    let idx = allSrcs.indexOf(src)
+
+    const overlay = document.createElement('div')
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.96);display:flex;align-items:center;justify-content:center;cursor:zoom-out;backdrop-filter:blur(10px);'
+
+    const imgEl = document.createElement('img')
+    imgEl.style.cssText = 'max-width:92vw;max-height:88vh;object-fit:contain;border-radius:6px;box-shadow:0 30px 90px rgba(0,0,0,0.9);transition:opacity 0.2s ease;user-select:none;'
+    imgEl.src = src
+
+    // Prev / next buttons
+    const btn = (label, dir) => {
+      const b = document.createElement('button')
+      b.innerHTML = dir === -1
+        ? '<svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>'
+        : '<svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>'
+      b.style.cssText = `position:absolute;${dir===-1?'left:16px':'right:16px'};top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.08);border:none;color:#E8C87A;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s;z-index:2;`
+      b.addEventListener('mouseenter', () => b.style.background = 'rgba(232,200,122,0.18)')
+      b.addEventListener('mouseleave', () => b.style.background = 'rgba(255,255,255,0.08)')
+      b.addEventListener('click', (e) => {
+        e.stopPropagation()
+        idx = (idx + dir + allSrcs.length) % allSrcs.length
+        imgEl.style.opacity = '0'
+        setTimeout(() => { imgEl.src = allSrcs[idx]; imgEl.style.opacity = '1' }, 160)
+      })
+      return b
+    }
+    overlay.appendChild(btn('←', -1))
+    overlay.appendChild(imgEl)
+    overlay.appendChild(btn('→', 1))
+
+    const counter = document.createElement('div')
+    counter.style.cssText = 'position:absolute;bottom:18px;left:50%;transform:translateX(-50%);color:#E8C87A;font-family:monospace;font-size:13px;letter-spacing:2px;'
+    counter.textContent = `${idx + 1} / ${allSrcs.length}`
+    imgEl.addEventListener('load', () => { counter.textContent = `${allSrcs.indexOf(imgEl.src.split('/').pop().replace(/.*\//, '')) >= 0 ? idx + 1 : idx + 1} / ${allSrcs.length}` })
+    overlay.appendChild(counter)
+
+    const close = () => { overlay.remove(); document.removeEventListener('keydown', keyH) }
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close() })
+    const keyH = (e) => {
+      if (e.key === 'Escape') close()
+      if (e.key === 'ArrowLeft') { idx = (idx - 1 + allSrcs.length) % allSrcs.length; imgEl.style.opacity = '0'; setTimeout(() => { imgEl.src = allSrcs[idx]; imgEl.style.opacity = '1' }, 160) }
+      if (e.key === 'ArrowRight') { idx = (idx + 1) % allSrcs.length; imgEl.style.opacity = '0'; setTimeout(() => { imgEl.src = allSrcs[idx]; imgEl.style.opacity = '1' }, 160) }
+    }
+    document.addEventListener('keydown', keyH)
+    document.body.appendChild(overlay)
+  },
+
+  setupEntrance() {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('gallery-visible')
+          obs.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.08 })
+    this.el.querySelectorAll('.gallery-item').forEach(el => obs.observe(el))
+  },
+
+  destroyed() {
+    this._destroyed = true
+    if (this._cancelFrame) this._cancelFrame()
+    if (this._renderer3d) this._renderer3d.dispose()
+    if (this._mouseCb) this.el.removeEventListener('mousemove', this._mouseCb)
+    this._items.forEach(i => i._glCleanup && i._glCleanup())
+  }
+}
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken},
-  hooks: { NavBar, MobileNav, CloseMobileNav, HeroSlider, CountDown, Gallery, Cart, MerchCart, AdminCharts }
+  hooks: { NavBar, MobileNav, CloseMobileNav, HeroSlider, CountDown, Gallery, Cart, MerchCart, AdminCharts, Gallery3D }
 })
 
 topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})

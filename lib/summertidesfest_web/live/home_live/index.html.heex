@@ -815,43 +815,36 @@
     </div>
   </div>
 
-  <div class="bg-black pb-12 px-3 md:px-6">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 auto-rows-[140px] sm:auto-rows-[170px] md:auto-rows-[220px]">
-      <%!-- Featured image — large, top-left --%>
-      <div class="col-span-2 row-span-2 overflow-hidden group relative cursor-pointer">
-        <img
-          src={Enum.at(@gallery_images, 0)}
-          class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        </div>
-        <div class="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <span class="text-[#E8C87A] bangers text-lg tracking-wider uppercase">
-            Summer Tides 2025
-          </span>
-        </div>
-      </div>
-
-      <%!-- Images 2–5 — smaller tiles, top-right 2×2 --%>
-      <%= for image <- Enum.slice(@gallery_images, 1, 4) do %>
-        <div class="overflow-hidden group relative cursor-pointer">
+  <%!-- Three.js particles + masonry gallery with tilt/lightbox --%>
+  <div id="gallery-3d" phx-hook="Gallery3D" class="relative bg-black pb-16 px-3 md:px-6 overflow-hidden">
+    <%!-- Three.js canvas injected here by hook --%>
+    <div class="relative z-10 columns-2 md:columns-3 lg:columns-4 gap-2 md:gap-3">
+      <%= for {image, i} <- Enum.with_index(@gallery_images) do %>
+        <div
+          class="gallery-item break-inside-avoid mb-2 md:mb-3 overflow-hidden cursor-pointer relative group"
+          data-tilt
+          data-src={image}
+          style={"animation-delay: #{rem(i, 6) * 80}ms"}
+        >
           <img
             src={image}
-            class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
+            alt={"Summer Tides #{i + 1}"}
+            loading="lazy"
+            class="w-full block object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          <div class="absolute inset-0 bg-[#5C2D0A]/0 group-hover:bg-[#5C2D0A]/30 transition-all duration-300">
+          <%!-- Gold shimmer overlay on hover --%>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#5C2D0A]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-400 pointer-events-none">
           </div>
-        </div>
-      <% end %>
-
-      <%!-- Images 6–7 — wide bottom strip --%>
-      <%= for image <- Enum.slice(@gallery_images, 5, 2) do %>
-        <div class="col-span-2 overflow-hidden group relative cursor-pointer">
-          <img
-            src={image}
-            class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-          />
-          <div class="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div class="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+            <span class="text-[#E8C87A] bangers text-sm tracking-widest uppercase">Summer Tides</span>
+          </div>
+          <%!-- Zoom icon --%>
+          <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div class="w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center">
+              <svg class="w-4 h-4 text-[#E8C87A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
+              </svg>
+            </div>
           </div>
         </div>
       <% end %>
