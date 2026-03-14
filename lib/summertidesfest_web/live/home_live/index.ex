@@ -31,21 +31,23 @@ defmodule SummertidesfestWeb.HomeLive.Index do
   ]
 
   @gallery_images [
-    "/images/pic.jpg",
-    "/images/pic2.jpg",
-    "/images/pic4.jpg",
-    "/images/pic5.jpg",
-    "/images/pic6.jpg",
-    "/images/pic7.jpg",
-    "/images/pic9.jpg"
+    "/new_images/SUM05030.jpg",
+    "/new_images/END02317.jpg",
+    "/new_images/END02019.jpg",
+    "/new_images/DSC07176.jpg",
+    "/new_images/SUM05149.jpg",
+    "/new_images/END02403.jpg",
+    "/new_images/DSC07190.jpg",
+    "/new_images/END02181.jpg",
+    "/new_images/SUM05090.jpg"
   ]
 
   @hero_slides [
-    "/images/pic.jpg",
-    "/images/pic2.jpg",
-    "/images/pic5.jpg",
-    "/images/pic6.jpg",
-    "/images/pic7.jpg"
+    "/new_images/DSC03778.jpg",
+    "/new_images/SUM05160.jpg",
+    "/new_images/END02025.jpg",
+    "/new_images/DSC07009-Enhanced-NR.jpg",
+    "/new_images/SUM05035.jpg"
   ]
 
   @schedule %{
